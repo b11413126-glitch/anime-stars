@@ -1,0 +1,15 @@
+name: Manual source preflight (no deployment)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - run: node --test tests/ranking.test.mjs
+      - run: python3 -m unittest discover -s tests -p test_collect.py -v
+      - name: Check public source from the actual runner
+        run: python3 tools/collect.py

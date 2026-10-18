@@ -1,0 +1,43 @@
+name: 部署已驗證排行榜
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'tools/**'
+      - 'tests/**'
+      - '.github/workflows/pages.yml'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: anime-ranking-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    if: vars.ANIME_SOURCE_VERIFIED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - run: node --test tests/ranking.test.mjs
+      - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: 確認完整台灣觀看資格與快照格式
+        run: node tools/validate_snapshot.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+          retention-days: 1
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

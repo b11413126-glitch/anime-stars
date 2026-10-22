@@ -3,10 +3,23 @@
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const API = 'https://api.gamer.com.tw/';
 const BASE = 'https://ani.gamer.com.tw/';
+const SOURCE_TIMES = new WeakMap();
+
+function catalogDigest(state){
+  if(state.region!=='TW'||state.error||state.phase==='stopped'||!Number.isInteger(state.totalPages)||state.totalPages<1||
+    state.pages.length!==state.totalPages||state.nextCatalogPage!==state.totalPages+1||
+    state.pages.some((p,i)=>p.page!==i+1||p.totalPages!==state.totalPages||p.count<1)||
+    state.pages.reduce((n,p)=>n+p.count,0)!==state.catalog.length)throw Error('完整目錄預檢缺頁或含錯誤');
+  const ids=state.catalog.map(x=>x.id);
+  if(!ids.length||new Set(ids).size!==ids.length||ids.some(id=>!/^\/animeRef\.php\?sn=\d+$/.test(id)))
+    throw Error('完整目錄預檢含重複或無效作品');
+  return createHash('sha256').update([...ids].sort().join('\n')).digest('hex');
+}
 
 export class MemberBrowserCollector {
   constructor(sourceTab, importTab, {root=ROOT,catalogSort=1}={}) {
@@ -34,8 +47,10 @@ export class MemberBrowserCollector {
     try{previous=JSON.parse(await fs.readFile(path.join(this.root,'evidence/browser-driver.json'),'utf8'));}
     catch(error){if(error.code!=='ENOENT')throw error;}
     if(previous?.checkedFrom===saved.checkedFrom&&previous.error)throw Error('此批次已有來源錯誤，不可接續');
+    if(!saved.catalogPrecheck)throw Error('未通過兩輪目錄預檢的舊批次不可接續');
     this.state = {phase:'verify', checkedFrom:saved.checkedFrom, region:saved.region,
       catalogSort:saved.catalogSort||1,
+      catalogPrecheck:saved.catalogPrecheck,
       robots:saved.robots, catalog:saved.catalog, pages:saved.pages,
       totalPages:saved.pages.length, nextCatalogPage:saved.pages.length+1, offset:saved.processed};
     await this.save();
@@ -48,9 +63,10 @@ export class MemberBrowserCollector {
   async visit(url) {
     await this.assertSourceAllowed();
     if(this.state?.phase==='stopped')throw Error('來源已停止，必須重新確認原因');
-    const wait = this.nextSourceAt - Date.now();
+    const wait = Math.max(this.nextSourceAt,SOURCE_TIMES.get(this.sourceTab)||0) - Date.now();
     if (wait > 0) await new Promise(resolve => setTimeout(resolve, wait));
     this.nextSourceAt = Date.now() + 2600;
+    SOURCE_TIMES.set(this.sourceTab,this.nextSourceAt);
     await this.sourceTab.goto(url);
     await this.sourceTab.getAXState({emit:false});
   }
@@ -153,10 +169,22 @@ export class MemberBrowserCollector {
   }
   async begin() {
     if(this.state.nextCatalogPage!==this.state.totalPages+1) throw Error('目錄未完成');
+    if(!this.state.catalogPrecheck||this.state.catalogPrecheck.idSHA256!==catalogDigest(this.state))
+      throw Error('須先以 confirmCatalog 完成兩輪完整目錄核對，才可逐部擷取');
     const result=await this.persist({kind:'begin',catalog:this.state.catalog,pages:this.state.pages,
       catalogSort:this.state.catalogSort,
+      catalogPrecheck:this.state.catalogPrecheck,
       region:this.state.region,checkedFrom:this.state.checkedFrom,robots:this.state.robots,delaySeconds:2.6});
     this.state.phase='verify'; this.state.offset=0; await this.save(); return result;
+  }
+  async confirmCatalog(otherDriver){
+    if(otherDriver===this||otherDriver.state===this.state)throw Error('兩輪目錄必須分別讀取，不能重複使用同一輪');
+    const first=catalogDigest(this.state),second=catalogDigest(otherDriver.state);
+    if(first!==second)throw Error('兩輪完整目錄作品集合改變，不啟動逐部擷取');
+    this.state.catalogPrecheck={confirmedAt:new Date().toISOString(),idSHA256:first,
+      catalogCount:this.state.catalog.length,pageCounts:[this.state.pages.length,otherDriver.state.pages.length],
+      firstCheckedFrom:this.state.checkedFrom,secondCheckedFrom:otherDriver.state.checkedFrom};
+    await this.save();return {...this.state.catalogPrecheck,ok:true};
   }
   async step(limit=20) {
     if(this.state.phase!=='verify'||this.state.error) throw Error('此來源已停止或未準備好');

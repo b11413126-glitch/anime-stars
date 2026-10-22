@@ -180,3 +180,41 @@ test('年份分級分享網址可還原，清除篩選移除對應參數',()=>{
   const clean=filterURL(url,{query:'',minimum:0,tags:[]});
   assert.equal(new URL(clean).search,'');
 });
+
+test('兩輪完整目錄唯一集合相同後才可啟動逐部擷取',async()=>{
+  function complete(ids){
+    const d=new MemberBrowserCollector({},{});
+    d.state={phase:'catalog',region:'TW',checkedFrom:'2026-10-22T00:00:00Z',totalPages:1,nextCatalogPage:2,
+      catalog:ids.map(sn=>({id:'/animeRef.php?sn='+sn})),pages:[{page:1,totalPages:1,count:ids.length}]};
+    d.save=async()=>{};d.persist=async()=>({ok:true,processed:0});return d;
+  }
+  const driver=complete([42,43]);
+  await assert.rejects(driver.begin(),/兩輪完整目錄/);
+  await assert.rejects(driver.confirmCatalog(complete([42,44])),/作品集合改變/);
+  await assert.rejects(driver.confirmCatalog(complete([42,42])),/重複/);
+  const proof=await driver.confirmCatalog(complete([43,42]));
+  assert.equal(proof.catalogCount,2);assert.equal(proof.idSHA256.length,64);
+  assert.equal((await driver.begin()).ok,true);
+});
+
+test('兩輪預檢不能接受漏頁，預檢後變更集合也不可開始',async()=>{
+  const driver=new MemberBrowserCollector({},{});
+  driver.state={phase:'catalog',region:'TW',totalPages:2,nextCatalogPage:3,
+    catalog:[{id:'/animeRef.php?sn=42'}],pages:[{page:1,totalPages:2,count:1}]};
+  driver.save=async()=>{};
+  await assert.rejects(driver.confirmCatalog(driver),/分別讀取/);
+  await assert.rejects(driver.confirmCatalog({state:structuredClone(driver.state)}),/缺頁/);
+  driver.state={...driver.state,totalPages:1,nextCatalogPage:2,pages:[{page:1,totalPages:1,count:1}]};
+  await driver.confirmCatalog({state:structuredClone(driver.state)});
+  driver.state.catalog[0].id='/animeRef.php?sn=43';
+  await assert.rejects(driver.begin(),/兩輪完整目錄/);
+});
+
+test('共用同一來源分頁的收集器共同遵守 2.6 秒間隔',async()=>{
+  const times=[];
+  const source={goto:async()=>times.push(Date.now()),getAXState:async()=>{}};
+  const a=new MemberBrowserCollector(source,{}),b=new MemberBrowserCollector(source,{});
+  a.assertSourceAllowed=b.assertSourceAllowed=async()=>{};
+  await a.visit('https://example.test/first');await b.visit('https://example.test/second');
+  assert.ok(times[1]-times[0]>=2590);
+});

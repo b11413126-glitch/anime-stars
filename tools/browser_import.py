@@ -105,6 +105,7 @@ class ImportSession:
                         'processed': state['processed'], 'membershipUnchanged': True}
             state = {'success': False, 'checkedFrom': payload['checkedFrom'], 'region': 'TW',
                      'catalogSort': payload.get('catalogSort', 1),
+                     'catalogPrecheck': payload.get('catalogPrecheck'),
                      'catalog': catalog, 'pages': pages, 'rows': [], 'processed': 0, 'excluded': 0,
                      'accessContext': 'member-browser', 'records': [], 'robots': payload['robots'],
                      'officialTagsVerified': True}
@@ -161,6 +162,7 @@ class ImportSession:
                         'catalogRecheckedAt': state.get('catalogRecheckedAt'),
                         'catalogCount': len(state['catalog']), 'pageCount': len(state['pages']),
                         'catalogSort': state.get('catalogSort', 1),
+                        'catalogPrecheck': state.get('catalogPrecheck'),
                         'excludedCount': state['excluded'], 'items': state['rows']}
             atomic_json(self.root / 'site/data.json', snapshot)
             state.update(success=True, updatedAt=now)
@@ -173,6 +175,7 @@ class ImportSession:
                 'officialTagsVerified': True,
                 'catalogCount': len(state['catalog']), 'ratedCount': len(state['rows']),
                 'catalogSort': state.get('catalogSort', 1),
+                'catalogPrecheck': state.get('catalogPrecheck'),
                 'excludedCount': state['excluded'], 'failedCount': 0, 'duplicateCount': 0,
                 'pages': state['pages'], 'records': state['records']})
             return {'ok': True, 'updatedAt': now, 'ratedCount': len(state['rows']), 'excluded': state['excluded']}

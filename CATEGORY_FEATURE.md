@@ -19,6 +19,10 @@
 
 目前新一輪資料更新仍受來源完整性阻礙，evidence/source-blocked.json 維持 blocked、automaticRetryAllowed:false。每日排程 ACTIVE，無來源狀態變化時只核對公開網站並保持安靜。
 
+## 擷取流程修正
+
+逐部核對前新增 confirmCatalog：先以兩個獨立 driver 逐一讀完兩輪目錄，核對頁碼、頁數、每頁數量、唯一 ID 集合及 SHA-256；兩輪完整集合一致才可 begin。相同資料不可冒充第二輪，預檢後集合變動也會拒絕。所有 driver 對同一來源 Tab 共用 2.6 秒導覽間隔。這可提前發現不穩定分頁並節省逐部核對成本，但不能修復官方來源，也不構成已取得今日完整快照。
+
 ## 發布檢查
 
 目前年份／分級版本執行 `node tools/validate_snapshot.mjs --require-classification`：必須有完整台灣可觀看快照、正確總量與逐部年份、有效官方年齡說明。可發布舊的完整真實快照，但保留其實際 updatedAt 與逾期提醒，不得冒充當日更新。

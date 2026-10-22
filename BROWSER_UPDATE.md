@@ -25,7 +25,7 @@ let driverModule = await import('file:///ABSOLUTE_PROJECT_PATH/tools/member_brow
 let driver = new driverModule.MemberBrowserCollector(sourceTab, receiverTab);
 ```
 
-5. 全新的一日更新：`await driver.initialize()`，然後每次呼叫 `await driver.catalogStep(20)`，直到 `nextCatalogPage > totalPages`。HTML 與 API 首頁必須有相同的完整 ID 集合；同一頁中純排序交換不代表缺漏，重複或集合差異仍會拒絕。可在讀到首頁後先呼叫 `await driver.probe()` 兩次，確認登入仍有效；兩次少量驗證及全部目錄都成功後，才執行 `await driver.begin()`。每次來源批次最多 20 部，以免長時間阻塞對話。
+5. 全新更新先建立第一個 driver，initialize() 後讀完所有 catalogStep(20)。再以同一來源 Tab 及接收器建立另一個 MemberBrowserCollector，重新 initialize() 並讀完全部目錄。兩個 driver 共用來源導覽間隔，不能平行擷取。用 await driver.confirmCatalog(secondDriver) 核對兩輪均無缺頁／重複且完整唯一 ID 集合相同，再執行兩次 probe()。可在第一輪首頁後先做小量登入診斷，但兩輪完整核對及兩次少量真實驗證都成功後，才可 await driver.begin() 開始昂貴的逐部資料核對。不能用同一個 driver 或同一輪資料冒充第二輪。來源拒絕、缺漏、重複或集合改變即停止；預檢不能替代完成後的首末頁與全目錄變動核對。
 6. 每次呼叫 `await driver.step()`，保存所有完整批次，直到 `state.offset === state.catalog.length`。`evidence/browser-current.json` 是已接受資料的實際進度。若同一日的進行中驗證被打斷，重新建立 Tab 與 driver 後，可用 `await driver.resumeImportedRun()` 接續。若跨日、目錄改變或已有錯誤，不要盲目接續舊批次；重新確認來源狀態後建立新的一日驗證。
 7. 完成後呼叫 `await driver.finish()`。它會再次核對首頁、末頁及總頁數，全部成功後才原子更新 `site/data.json`。任何來源拒絕、缺漏、無效值或目錄變動均不得以半份榜單取代舊資料。
 8. 執行 `node --test tests/ranking.test.mjs`、`python -m unittest discover -s tests -p 'test_*.py' -v` 及 `node tools/validate_snapshot.mjs --require-classification`。成功後，提交已驗證的公開作品快照至 `b11413126-glitch/anime-stars` 的 `main`。分類發布須同時提交介面、資料驗證程式及必要文件；題材版另須額外通過 --require-tags。只上傳網站、程式與操作文件，排除 `evidence/`、`HANDOVER.md`、測試暫存檔與任何登入資料。

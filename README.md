@@ -4,6 +4,8 @@
 
 動畫瘋官方顯示星等排行榜，公開瀏覽免登入。依一位小數星等降冪、評分人數降冪、名稱固定排序，名次連續；搜尋與最低評分人數篩選保留全站名次，每頁 50 部。
 
+網站提供作品年份與年齡分級分類，與搜尋、最低評分人數同時篩選，保留全站名次；頁首推薦與網址會隨條件同步。分類取自既有真實快照的年月與官方年齡說明，不推測題材。規格及來源更新阻礙見 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)。
+
 ## 資料與完整性
 
 資料取自動畫瘋台灣目錄與官方播放器中繼資料。不同季、劇場版依官方 `animeRef.php?sn=` 條目分開，各集不重複上榜。逐部確認官方觀看權限、作品身分、已上架且未下架；不把公開目錄直接當成可觀看證據，也不代表逐集播放過。部分作品需要會員、年齡或付費資格，實際觀看依官方當下規則。
@@ -25,11 +27,11 @@ GitHub Pages／公開儲存庫提供免費靜態網站；GitHub Actions 只測�
 ```powershell
 node --test tests/ranking.test.mjs
 python -m unittest discover -s tests -p 'test_*.py' -v
-node tools/validate_snapshot.mjs
+node tools/validate_snapshot.mjs --require-classification
 python -m http.server 8000 --bind 127.0.0.1 --directory site
 ```
 
-19 項單元／整合測試涵蓋排序、官方浮點尾差、搜尋保留名次、缺漏與重複列、觀看權限、日期格式、登入拒絕停止、失敗保留舊版及全目錄集合複查。測試不能替代真實來源核對。
+36 項單元／整合測試涵蓋排序、官方浮點尾差、搜尋保留名次、缺漏與重複列、觀看權限、日期格式、登入拒絕停止、失敗保留舊版、全目錄集合複查，以及 HTML／API 首頁僅排序不同時仍核對完整 ID 集合。另涵蓋題材交集、網址還原、官方題材缺漏停止、同頁排序交換、跨頁重複停止、來源停止紀錄及錯誤批次不可接續。測試不能替代真實來源核對。
 
 `tools/collect.py` 與 `verify-source.yml` 是無登入來源診斷工具；遇到限制級登入要求會停止，不是會員每日更新的替代方式。會員更新使用 `tools/member_browser_driver.mjs` 與本機 `tools/browser_import.py`，只透過正常瀏覽器讀公開作品欄位，每次來源導覽至少間隔 2.6 秒。
 

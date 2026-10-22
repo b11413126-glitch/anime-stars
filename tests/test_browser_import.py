@@ -29,7 +29,7 @@ class BrowserImportTests(unittest.TestCase):
 
     def record(self, sn, allowed=True):
         return {'animeSn': sn, 'checkedAt': '2026-10-18T00:01:00Z',
-                'data': {'anime': {'animeSn': sn, 'score': 4.9, 'reviewCount': 123},
+                'data': {'anime': {'animeSn': sn, 'score': 4.9, 'reviewCount': 123, 'tags': ['奇幻', '戀愛']},
                          'video': {'animeSn': sn, 'videoSn': sn + 100, 'upTime': '2020/01/01 00:00',
                                    'downTime': '', 'watchingPermission': {'pass': allowed},
                                    'requestParentPassword': False}}}
@@ -59,6 +59,46 @@ class BrowserImportTests(unittest.TestCase):
         snapshot = json.loads((self.root / 'site/data.json').read_text(encoding='utf-8'))
         self.assertEqual(len(snapshot['items']), 2)
         self.assertEqual(snapshot['items'][0]['availability']['accessContext'], 'member-browser')
+        self.assertTrue(snapshot['officialTagsVerified'])
+        self.assertEqual(snapshot['items'][0]['tags'], ['奇幻', '戀愛'])
+
+    def test_same_page_reordering_is_accepted_but_duplicates_are_rejected(self):
+        self.session.accept({'kind': 'batch', 'offset': 0, 'records': [self.record(42), self.record(43)]})
+        ids = [x['id'] for x in self.catalog]
+        with self.assertRaises(ValueError):
+            self.session.accept({'kind': 'finish', 'firstIds': [ids[0], ids[0]],
+                                 'lastIds': ids, 'totalPages': 1})
+        self.assertTrue(self.session.accept({'kind': 'finish', 'firstIds': ids[::-1],
+                                             'lastIds': ids, 'totalPages': 1})['ok'])
+
+    def test_bad_tags_roll_back_the_entire_batch_and_preserve_snapshot(self):
+        for tags in (None, '奇幻', [''], [' 奇幻'], ['奇幻', '奇幻'], [123]):
+            bad = self.record(43)
+            bad['data']['anime']['tags'] = tags
+            with self.assertRaises(ValueError):
+                self.session.accept({'kind': 'batch', 'offset': 0, 'records': [self.record(42), bad]})
+            state = json.loads(self.session.state_path.read_text(encoding='utf-8'))
+            self.assertEqual(state['processed'], 0)
+            self.assertEqual((self.root / 'site/data.json').read_text(encoding='utf-8'), 'previous snapshot')
+
+    def test_explicit_no_tags_is_valid_but_missing_tags_on_unrated_work_is_not(self):
+        record = self.record(42)
+        record['data']['anime']['tags'] = []
+        self.session.accept({'kind': 'batch', 'offset': 0, 'records': [record]})
+        record = self.record(43)
+        record['data']['anime'].update(score=0, reviewCount=0)
+        del record['data']['anime']['tags']
+        with self.assertRaises(ValueError):
+            self.session.accept({'kind': 'batch', 'offset': 1, 'records': [record]})
+        state = json.loads(self.session.state_path.read_text(encoding='utf-8'))
+        self.assertEqual(state['rows'][0]['tags'], [])
+        self.assertEqual(state['processed'], 1)
+
+    def test_robots_for_catalog_are_checked_before_collection(self):
+        with self.assertRaises(RuntimeError):
+            self.session.accept({'kind': 'robots', 'delaySeconds': 2.6,
+                                 'robots': {'https://ani.gamer.com.tw/': 'User-agent: *\nAllow: /',
+                                            'https://api.gamer.com.tw/': 'User-agent: *\nDisallow: /anime/v1/anime_list.php'}})
 
     def test_full_catalog_recheck_accepts_reordering_but_rejects_changed_membership(self):
         self.session.accept({'kind': 'batch', 'offset': 0, 'records': [self.record(42), self.record(43)]})

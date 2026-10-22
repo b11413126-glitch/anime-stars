@@ -24,8 +24,8 @@ jobs:
       - uses: actions/checkout@v6
       - run: node --test tests/ranking.test.mjs
       - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
-      - name: 確認完整台灣觀看資格與快照格式
-        run: node tools/validate_snapshot.mjs
+      - name: 確認完整台灣觀看資格、年份分級與快照格式
+        run: node tools/validate_snapshot.mjs --require-classification
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

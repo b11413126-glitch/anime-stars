@@ -1,8 +1,16 @@
 import {readFile} from 'node:fs/promises';
-import {verifiedItems} from '../site/snapshot.mjs';
+import {verifiedItems,verifiedTags} from '../site/snapshot.mjs';
+import {ageCategory} from '../site/ranking.mjs';
 
 const data = JSON.parse(await readFile(new URL('../site/data.json', import.meta.url), 'utf8'));
 const items = verifiedItems(data);
+if(process.argv.includes('--require-classification')&&(!items||items.some(x=>
+  !/^\d{4}(?:\/(?:0[1-9]|1[0-2]))?$/.test(x.year)||!ageCategory(x.ageRating)))){
+  throw Error('年份或官方年齡說明缺漏，不可發布年份／分級分類');
+}
+if(process.argv.includes('--require-tags')&&!verifiedTags(data)){
+  throw Error('尚未逐部驗證官方題材，不可發布分類功能');
+}
 if (!items || data.catalogCount !== items.length + data.excludedCount ||
     !Number.isInteger(data.pageCount) || data.pageCount < 1 ||
     !Number.isInteger(data.excludedCount) || data.excludedCount < 0) {
@@ -12,4 +20,5 @@ if (items.some(x => !x.year || !x.checkedAt || !Number.isFinite(Date.parse(x.che
   throw Error('作品年份或實際查詢時間缺漏，不可部署');
 }
 console.log(JSON.stringify({success:true,rankedCount:items.length,catalogCount:data.catalogCount,
-  pageCount:data.pageCount,excludedCount:data.excludedCount,updatedAt:data.updatedAt}));
+  pageCount:data.pageCount,excludedCount:data.excludedCount,updatedAt:data.updatedAt,
+  officialTagsVerified:verifiedTags(data)}));

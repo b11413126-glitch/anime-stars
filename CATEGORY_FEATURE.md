@@ -17,7 +17,7 @@
 
 2026-10-22 實查 robots 宣告的官方 sitemap：頁面導覽逾時，讀取樹狀結構回報 frame 過大；改以正常瀏覽器檔案下載同一公開 XML 亦逾時，沒有取得可驗證內容。未盲目重跑動態分頁，未將去重結果冒充完整新快照，未宣稱網站地圖已證明作品全集。
 
-目前新一輪資料更新仍受來源完整性阻礙，evidence/source-blocked.json 維持 blocked、automaticRetryAllowed:false。每日排程狀態依應用程式設定；無來源狀態變化時只核對公開網站並保持安靜，暫停時不執行。
+目前新一輪資料更新仍受來源完整性阻礙，evidence/source-blocked.json 維持 blocked、automaticRetryAllowed:false。每月排程狀態依應用程式設定；無來源狀態變化時只核對公開網站並保持安靜，暫停時不執行。
 
 ## 擷取流程修正
 
@@ -38,3 +38,7 @@ site/genres.json 與評分 site/data.json 分開。分類檔綁定原始評分�
 執行 tools/update_genres.py --crosswalk <已核對對照表> --cache-dir <本機公開欄位快取> --fetch。只讀官方 Bangumi 公開 API，單佇列至少間隔1.1秒（本機保守政策，不宣稱官方配額），每頁最多50筆年份瀏覽，再對缺少的已確認 subject ID 逐筆查詢。標準gzip減少傳輸體積；只保存公開身分、日期及 meta_tags，不保存評分、評論、私人收藏或登入資料。來源拒絕、格式錯誤及新傳輸失敗均立即停止、保存原因，不盲目自動重試；診斷或新證據確認可行後才可續行。
 
 省略 --fetch 可由快取離線重建。更新後執行既有測試、node tools/validate_snapshot.mjs --require-classification 及 node tools/validate_genres.mjs，通過才發布。新評分快照必須同步重建分類檔，不能沿用錯誤雜湊的舊檔；題材更新絕不變更原評分時間。來源授權與修改標示見 [GENRE_DATA_LICENSE.md](GENRE_DATA_LICENSE.md)。動畫瘋來源停止紀錄仍有效，外部分類不構成重試其失敗分頁的理由。
+
+## 2026-10-23 月更調整
+
+使用者改為排名每月最多更新一次，並指定立即執行。本次重查第一輪69頁、1912個唯一作品完整通過；第二輪第13頁重複 /animeRef.php?sn=113768（WITCH WATCH 魔女守護者），預檢停止，沒有進行逐部評分擷取，沒有改動正式評分或分類檔。停止紀錄仍要求新證據或明確人工指示才可重試。網站新增月更說明，逾期提醒門檻從36小時改為35天；資料時間仍為實際成功時間。

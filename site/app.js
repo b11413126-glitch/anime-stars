@@ -165,7 +165,7 @@ try{
     filterInputs();
     const date=new Date(data.updatedAt);
     $('updated').textContent='最後成功更新：'+date.toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
-    if(Date.now()-date.getTime()>36*3600*1000)$('notice').textContent='資料已超過 36 小時未更新，以下為上次成功取得的排名。';
+    if(Date.now()-date.getTime()>35*24*3600*1000)$('notice').textContent='資料已超過 35 天未更新，以下為上次成功取得的排名。';
   }else $('notice').textContent='資料來源尚未通過完整性及台灣觀看資格驗證，目前不提供排名。';
   $('excluded').textContent=verified?`無評分而未列入：${format.format(data.excludedCount||0)} 部。部分作品可能需登入、年齡驗證或付費資格；可觀看狀態以官方當下頁面為準。`:'尚未取得完整資料，無評分作品數尚未確認。';
 }catch(error){

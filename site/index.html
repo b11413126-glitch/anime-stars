@@ -5,7 +5,8 @@
 <section id="leader" class="leader" aria-label="最高分作品"><span class="top-label">TOP RATED / 01</span><h2>等待首次資料驗證</h2><p>尚未取得完整資料，目前不顯示排行榜。</p></section>
 <section class="toolbar" aria-label="搜尋與篩選"><label>搜尋作品<input id="search" type="search" placeholder="輸入動畫名稱…" autocomplete="off"></label><label>最低評分人數<input id="minimum" type="number" min="0" step="1" value="0" inputmode="numeric"></label><label>作品年份<select id="year"><option value="">全部年份</option></select></label><label>年齡分級<select id="age"><option value="">全部分級</option></select></label><button id="reset" type="button">清除全部篩選</button></section>
 <p class="filter-help">年份依來源標示年月分組；分級依官方觀看年齡說明整理。所有條件須同時符合，保留全站名次。</p>
-<fieldset id="topic-categories" class="categories" aria-describedby="tags-status" hidden><legend>題材分類 <span id="selected" aria-live="polite">全部題材</span></legend><p id="tags-status">讀取官方題材中</p><div id="tags" class="tag-options"></div></fieldset>
+<fieldset id="topic-categories" class="categories" aria-describedby="tags-status genre-attribution" hidden><legend>題材分類 <span id="selected" aria-live="polite">全部題材</span></legend><p id="tags-status">讀取題材中</p><div id="tags" class="tag-options"></div><p id="genre-attribution" class="genre-attribution"></p></fieldset>
+<p id="classification-notice" class="notice" role="status"></p>
 <div class="meta"><span id="count" aria-live="polite">讀取資料中</span><span id="updated">尚未更新</span></div><p id="notice" class="notice" role="status"></p>
 <div class="table-head"><span>排名 / 作品</span><span>官方星等</span><span>評分人數</span></div><section id="list" aria-label="動畫排名" aria-busy="true"></section>
 <nav class="pagination" aria-label="分頁"><button id="prev" type="button">← 上一頁</button><span id="page">第 1 / 1 頁</span><button id="next" type="button">下一頁 →</button></nav>

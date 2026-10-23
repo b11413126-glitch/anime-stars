@@ -2,6 +2,7 @@ import{test}from'node:test';import assert from'node:assert/strict';import{rankIt
 import{verifiedItems,verifiedTags}from'../site/snapshot.mjs';
 import{officialTags,readFilters,filterURL,ageCategory,workYears}from'../site/ranking.mjs';
 import{MemberBrowserCollector}from'../tools/member_browser_driver.mjs';
+import{verifiedGenres,applyGenres}from'../site/genres.mjs';
 function catalogDriver(apiIds){
   const driver=new MemberBrowserCollector({},{});
   driver.state={totalPages:null,nextCatalogPage:1,firstIds:['animeRef.php?sn=42','animeRef.php?sn=43'],catalog:[],pages:[]};
@@ -217,4 +218,53 @@ test('共用同一來源分頁的收集器共同遵守 2.6 秒間隔',async()=>{
   a.assertSourceAllowed=b.assertSourceAllowed=async()=>{};
   await a.visit('https://example.test/first');await b.visit('https://example.test/second');
   assert.ok(times[1]-times[0]>=2590);
+});
+
+// Synthetic identities below are unit fixtures only; never website data.
+function genreFixture(){
+  const snapshot={updatedAt:'2026-10-18T00:00:00Z',items:[
+    {id:'test-a',title:'測試甲',image:'https://p2.bahamut.com.tw/B/ACG/c/42/0000042.JPG',year:'2023/09',score:5,votes:100},
+    {id:'test-b',title:'測試乙',image:'https://p2.bahamut.com.tw/B/ACG/c/43/0000043.JPG',year:'2024/01',score:4.9,votes:80}]};
+  const hash='a'.repeat(64),mapping={'奇幻':'奇幻','战斗':'戰鬥'};
+  const genres={schemaVersion:1,source:'bangumi-meta-tags',sourceURL:'https://bgm.tv/',license:'CC BY-SA 3.0',
+    licenseURL:'https://creativecommons.org/licenses/by-sa/3.0/',updatedAt:'2026-10-23T03:00:00Z',
+    checkedFrom:'2026-10-23T01:00:00Z',checkedThrough:'2026-10-23T02:00:00Z',
+    rankingUpdatedAt:snapshot.updatedAt,rankingSHA256:hash,rankingCount:2,classifiedCount:1,
+    crosswalk:{name:'bangumi-data',license:'CC BY 4.0',url:'https://unpkg.com/bangumi-data@0.3.232/dist/data.json',sha256:'b'.repeat(64)},
+    records:[{id:'test-a',status:'classified',tags:['奇幻','戰鬥'],sourceTags:['奇幻','战斗'],checkedAt:'2026-10-23T01:30:00Z',
+      match:{subjectId:1,gamerId:'42',titleAlias:'測試甲',month:'2023/09',sourceTitle:'試験一'},subjectName:'試験一',subjectDate:'2023-09-29'},
+      {id:'test-b',status:'unclassified',tags:[],reason:'identity-not-confirmed'}]};
+  return {snapshot,genres,mapping,hash};
+}
+test('外部題材與評分時間分開，未分類仍保留在完整排名',()=>{
+  const {snapshot,genres,mapping,hash}=genreFixture(),before=JSON.stringify(snapshot);
+  const records=verifiedGenres(snapshot,genres,mapping,hash),ranked=applyGenres(rankItems(snapshot.items),records);
+  assert.equal(selectItems(ranked,'',0).length,2);
+  assert.deepEqual(selectItems(ranked,'',0,['奇幻','戰鬥']).map(x=>x.rank),[1]);
+  assert.deepEqual(ranked[1].tags,[]);assert.equal(ranked[1].genre.status,'unclassified');
+  assert.equal(JSON.stringify(snapshot),before);assert.notEqual(genres.updatedAt,snapshot.updatedAt);
+});
+test('分類檔不能套在不同評分快照，漏列與重複列都拒絕',()=>{
+  for(const change of [g=>g.rankingSHA256='c'.repeat(64),g=>g.rankingUpdatedAt=g.updatedAt,
+    g=>g.records.pop(),g=>g.records[1]=structuredClone(g.records[0]),g=>g.classifiedCount=2]){
+    const {snapshot,genres,mapping,hash}=genreFixture();change(genres);
+    assert.throws(()=>verifiedGenres(snapshot,genres,mapping,hash));
+  }
+});
+test('外部題材拒絕同名不同月、錯誤ACG編號、錯誤季別與任意標籤',()=>{
+  for(const change of [r=>r.match.gamerId='99',r=>r.match.titleAlias='測試甲 第二季',
+    r=>r.match.month='2024/09',r=>r.subjectDate='2024-09-29',r=>r.subjectName='別部作品',
+    r=>r.tags.push('戀愛'),r=>r.sourceTags.push('隨意推測'),r=>r.checkedAt='2026-10-24T00:00:00Z']){
+    const {snapshot,genres,mapping,hash}=genreFixture();change(genres.records[0]);
+    assert.throws(()=>verifiedGenres(snapshot,genres,mapping,hash));
+  }
+});
+test('空題材須有已核對證據，缺失不能冒充無題材或官方來源',()=>{
+  const {snapshot,genres,mapping,hash}=genreFixture();
+  genres.records[0].tags=[];genres.records[0].sourceTags=[];genres.records[0].status='unclassified';
+  genres.records[0].reason='no-supported-public-genre';genres.classifiedCount=0;
+  assert.equal(verifiedGenres(snapshot,genres,mapping,hash).size,2);
+  delete genres.records[0].match;
+  assert.throws(()=>verifiedGenres(snapshot,genres,mapping,hash));
+  genres.source='official';assert.throws(()=>verifiedGenres(snapshot,genres,mapping,hash));
 });

@@ -29,10 +29,11 @@ node --test tests/ranking.test.mjs
 python -m unittest discover -s tests -p 'test_*.py' -v
 node tools/validate_snapshot.mjs --require-classification
 node tools/validate_genres.mjs
+node tools/validate_studios.mjs
 python -m http.server 8000 --bind 127.0.0.1 --directory site
 ```
 
-48 項單元／整合測試涵蓋排序、官方浮點尾差、搜尋保留名次、缺漏與重複列、觀看權限、日期格式、登入拒絕停止、失敗保留舊版、全目錄集合複查，以及 HTML／API 首頁僅排序不同時仍核對完整 ID 集合。另涵蓋題材交集、網址還原、官方題材缺漏停止、同頁排序交換、跨頁重複停止、來源停止紀錄及錯誤批次不可接續。另驗證兩輪獨立完整目錄預檢後才能逐部擷取，並確保共用 Tab 的收集器遵守來源間隔。測試不能替代真實來源核對。
+58 項單元／整合測試涵蓋排序、官方浮點尾差、搜尋保留名次、缺漏與重複列、觀看權限、日期格式、登入拒絕停止、失敗保留舊版、全目錄集合複查，以及 HTML／API 首頁僅排序不同時仍核對完整 ID 集合。另涵蓋題材交集、網址還原、官方題材缺漏停止、同頁排序交換、跨頁重複停止、來源停止紀錄及錯誤批次不可接續。另驗證兩輪獨立完整目錄預檢後才能逐部擷取，並確保共用 Tab 的收集器遵守來源間隔。公司測試涵蓋精確職務、共同製作、公司聯集與題材交集、別名搜尋、排序及快照綁定。測試不能替代真實來源核對。
 
 `tools/collect.py` 與 `verify-source.yml` 是無登入來源診斷工具；遇到限制級登入要求會停止，不是會員定期更新的替代方式。會員更新使用 `tools/member_browser_driver.mjs` 與本機 `tools/browser_import.py`，只透過正常瀏覽器讀公開作品欄位，每次來源導覽至少間隔 2.6 秒。
 
@@ -41,3 +42,5 @@ python -m http.server 8000 --bind 127.0.0.1 --directory site
 官方來源：[台灣目錄](https://ani.gamer.com.tw/animeList.php)。本工具非官方網站。
 
 外部題材的來源、繁中轉換與授權見 [GENRE_DATA_LICENSE.md](GENRE_DATA_LICENSE.md)。題材更新工具與快取程序見 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)；新評分快照須同步重建綁定雜湊的題材檔。
+
+動畫製作公司與題材放在預設收合的分類篩選區；公司可複選，任一公司符合即可。僅採已核對作品的 Bangumi 公共動畫製作職務，共同製作全部保留；未知公司不排除全榜。搜尋公司及別名、已選置頂、作品數排序與網址還原規格見 [STUDIO_FEATURE.md](STUDIO_FEATURE.md)。分類時間與評分成功時間各自獨立。

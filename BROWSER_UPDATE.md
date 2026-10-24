@@ -1,5 +1,7 @@
 # 會員瀏覽器更新程序
 
+動畫製作公司分類與題材共用預設收合面板，程序見 [STUDIO_FEATURE.md](STUDIO_FEATURE.md)。發布前另執行 `node tools/validate_studios.mjs`；新評分快照與作品對照需同步重建綁定雜湊的 studios.json。發布後匿名讀回 data.json、genres.json、studios.json 核對各自時間、數量及SHA-256。公司來源為 Bangumi 公共職務，不構成解除動畫瘋來源停止或恢復暫停排程的授權。
+
 本專案的每月排名資料來源使用使用者在 Codex 內建瀏覽器正常登入的動畫瘋工作階段。GitHub Actions 只部署已通過完整驗證的靜態快照。不要匯出 Cookie、讀取瀏覽器憑證檔、設定巴哈密碼或把登入資訊放入 GitHub。
 
 來源與更新程式：`tools/member_browser_driver.mjs`（只使用已文件化的 CUA Tab 操作）與 `tools/browser_import.py`（本機驗證接收器）。受限 API 端點來自官方播放器原始碼。網站與 API 的 robots.txt 每次重新檢查；所有來源頁面導覽間隔至少 2.6 秒。

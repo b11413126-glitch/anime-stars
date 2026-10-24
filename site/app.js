@@ -1,11 +1,13 @@
 import {selectItems,officialTags,minimumVotes,readFilters,filterURL,workYears,AGE_CATEGORIES,ageCategory} from './ranking.mjs';
 import {verifiedItems,verifiedTags} from './snapshot.mjs';
 import {verifiedGenres,applyGenres} from './genres.mjs';
+import {verifiedStudios,applyStudios,studioOptions} from './studios.mjs';
 
 const $=id=>document.getElementById(id);
 const size=50,format=new Intl.NumberFormat('zh-TW');
 let ranked=[],page=1,tagsReady=false,availableTags=[];
 let genreInfo=null;
+let studiosReady=false,studioDirectory=[];
 let filters=readFilters(location.search);
 
 function el(tag,cls,text){
@@ -37,6 +39,35 @@ function filterInputs(){
   $('age').replaceChildren(new Option('全部分級',''),...AGE_CATEGORIES.map(([id,label])=>new Option(label,id)));
   $('age').value=filters.age;
   renderTags();
+  renderStudios();
+}
+function renderStudios(){
+  $('studio-selected').replaceChildren();$('studio-options').replaceChildren();
+  const known=new Set(studioDirectory.map(x=>x.id));
+  const options=[...filters.studios.filter(id=>!known.has(id)).map(id=>({id,name:'未找到的公司（'+id+'）',count:0})),
+    ...studioOptions(studioDirectory,filters.studios,$('studio-search').value)];
+  for(const company of options){
+    const label=el('label','studio-option'),input=el('input');
+    input.type='checkbox';input.value=company.id;input.checked=filters.studios.includes(company.id);
+    label.append(input,el('span','',company.name),el('small','',format.format(company.count)+' 部'));
+    input.addEventListener('change',()=>{
+      filters.studios=input.checked?[...filters.studios,company.id]:filters.studios.filter(id=>id!==company.id);
+      renderStudios();changed();
+      document.querySelector('.studio-option input[value="'+company.id+'"]')?.focus();
+    });
+    $(input.checked?'studio-selected':'studio-options').append(label);
+  }
+  if(!$('studio-options').childElementCount)$('studio-options').append(el('p','studio-empty',studiosReady?'沒有符合的公司':'公司資料尚未提供'));
+  $('studio-status').textContent='可複選，符合任一已選公司即可；題材與其他篩選條件仍須同時符合。僅列實際動畫製作職務，共同製作公司全部保留。';
+  $('studio-search').disabled=!studiosReady;
+}
+function filterSummary(){
+  const names=new Map(studioDirectory.map(x=>[x.id,x.name]));
+  const parts=[];
+  if(filters.tags.length)parts.push('題材：'+filters.tags.join(' ＋ '));
+  if(filters.studios.length)parts.push('公司：'+filters.studios.map(id=>names.get(id)||id).join(' ／ '));
+  const text=parts.join('；')||'全部題材與公司';
+  $('filter-summary').textContent=text;$('filter-summary').title=text;
 }
 function renderTags(){
   const selected=new Set(filters.tags);
@@ -64,7 +95,8 @@ function changed(){
   render();
 }
 function reset(){
-  filters={query:'',minimum:0,tags:[],year:'',age:''};
+  filters={query:'',minimum:0,tags:[],year:'',age:'',studios:[]};
+  $('studio-search').value='';
   filterInputs();changed();
 }
 function renderLeader(item){
@@ -73,7 +105,7 @@ function renderLeader(item){
   if(!item){
     hero.append(el('span','top-label','ANIME STARS'),
       el('h2','',ranked.length?'沒有符合條件的作品':'尚無已驗證的完整資料'),
-      el('p','',ranked.length?'調整題材、年份、分級、搜尋文字或最低評分人數，繼續探索。':'完整驗證通過後才會顯示排行榜。'));
+      el('p','',ranked.length?'調整題材、公司、年份、分級、搜尋文字或最低評分人數，繼續探索。':'完整驗證通過後才會顯示排行榜。'));
     return;
   }
   hero.append(el('span','top-label',`篩選結果最高分 · 全站第 ${format.format(item.rank)} 名`));
@@ -83,6 +115,7 @@ function renderLeader(item){
   hero.append(h,p);
 }
 function render(){
+  filterSummary();
   const items=selectItems(ranked,filters.query,filters.minimum,filters.tags,filters);
   const pages=Math.max(1,Math.ceil(items.length/size));
   page=Math.min(page,pages);
@@ -108,6 +141,16 @@ function render(){
       }
       info.append(tags);
     }
+    if(studiosReady){
+      const names=new Map(studioDirectory.map(s=>[s.id,s.name]));
+      const companies=el('div','work-studios',x.studioIds.length?'動畫製作：'+x.studioIds.map(id=>names.get(id)).join('、'):'製作公司尚未確認');
+      if(x.studioIds.length){
+        const source=el('a','genre-source','製作職務 ↗');
+        source.href='https://bgm.tv/subject/'+x.studio.subjectId;source.target='_blank';source.rel='noopener noreferrer';
+        companies.append(document.createTextNode(' · '),source);
+      }
+      info.append(companies);
+    }
     identity.append(info);
     const score=el('div','score',x.score.toFixed(1));score.append(el('small','','★'));
     row.append(identity,score,el('div','votes',format.format(x.votes)));$('list').append(row);
@@ -129,6 +172,7 @@ for(const id of ['search','minimum'])$(id).addEventListener('input',()=>{
 $('minimum').addEventListener('change',()=>{$('minimum').value=String(filters.minimum);});
 for(const id of ['year','age'])$(id).addEventListener('change',()=>{filters[id]=$(id).value;changed();});
 $('reset').addEventListener('click',reset);
+$('studio-search').addEventListener('input',renderStudios);
 $('prev').addEventListener('click',()=>{page--;render();});
 $('next').addEventListener('click',()=>{page++;render();});
 addEventListener('popstate',()=>{filters=readFilters(location.search);filterInputs();page=1;render();});
@@ -139,14 +183,19 @@ try{
   const snapshotText=await response.text(),data=JSON.parse(snapshotText),verified=verifiedItems(data);
   if(verified){
     ranked=verified;tagsReady=verifiedTags(data);
-    if(!tagsReady){
+    const sha=async text=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+    const hash=await sha(snapshotText);
+    let genreRecords=null,genreHash=null;
+    {
       try{
         const [genresResponse,mappingResponse]=await Promise.all([
           fetch('./genres.json',{cache:'no-store'}),fetch('./genre-map.json',{cache:'no-store'})]);
         if(!genresResponse.ok||!mappingResponse.ok)throw Error('分類檔案讀取失敗');
-        const [genres,mapping]=await Promise.all([genresResponse.json(),mappingResponse.json()]);
-        const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(snapshotText)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+        const [genreText,mapping]=await Promise.all([genresResponse.text(),mappingResponse.json()]);
+        const genres=JSON.parse(genreText);
         const records=verifiedGenres(data,genres,mapping,hash);
+        genreRecords=records;genreHash=await sha(genreText);
+        // This sidecar also supplies the verified identities used by studio credits.
         ranked=applyGenres(ranked,records);genreInfo=genres;tagsReady=true;
         const source=el('a','','Bangumi 維基公共標籤');source.href='https://bgm.tv/';source.target='_blank';source.rel='noopener noreferrer';
         const crosswalk=el('a','','bangumi-data');crosswalk.href='https://github.com/bangumi-data/bangumi-data';crosswalk.target='_blank';crosswalk.rel='noopener noreferrer';
@@ -161,6 +210,23 @@ try{
         console.warn('題材資料未啟用：',error);
       }
     }
+    try{
+      if(!genreRecords)throw Error('缺少已核對作品對照');
+      const response=await fetch('./studios.json',{cache:'no-store'});
+      if(!response.ok)throw Error('公司分類檔案讀取失敗');
+      const studios=await response.json();
+      const records=verifiedStudios(data,studios,genreRecords,hash,genreHash);
+      ranked=applyStudios(ranked,records);studioDirectory=studios.studios;studiosReady=true;
+      const source=el('a','','Bangumi 公共製作職務');source.href='https://bgm.tv/';source.target='_blank';source.rel='noopener noreferrer';
+      const license=el('a','','CC BY-SA 3.0');license.href=studios.licenseURL;license.target='_blank';license.rel='noopener noreferrer';
+      $('studio-attribution').replaceChildren(
+        document.createTextNode(`已確認 ${format.format(studios.classifiedCount)} / ${format.format(ranked.length)} 部、${format.format(studioDirectory.length)} 家公司；其餘 ${format.format(ranked.length-studios.classifiedCount)} 部製作公司尚未確認，未選公司時仍會顯示。`),el('br'),
+        document.createTextNode('來源：'),source,document.createTextNode('（'),license,document.createTextNode('；依「動畫製作」職務整理）。非動畫瘋官方分類；公司作品數指本榜已核對作品數。'),el('br'),
+        document.createTextNode('公司資料整理時間：'+new Date(studios.updatedAt).toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false})+'；評分時間保持原始快照。'));
+    }catch(error){
+      $('studio-notice').textContent='製作公司資料暫時無法通過核對，完整排行榜與其他已驗證篩選仍可使用。';
+      console.warn('公司資料未啟用：',error);
+    }
     availableTags=tagsReady?officialTags(ranked):[];
     filterInputs();
     const date=new Date(data.updatedAt);
@@ -169,6 +235,6 @@ try{
   }else $('notice').textContent='資料來源尚未通過完整性及台灣觀看資格驗證，目前不提供排名。';
   $('excluded').textContent=verified?`無評分而未列入：${format.format(data.excludedCount||0)} 部。部分作品可能需登入、年齡驗證或付費資格；可觀看狀態以官方當下頁面為準。`:'尚未取得完整資料，無評分作品數尚未確認。';
 }catch(error){
-  ranked=[];tagsReady=false;availableTags=[];renderTags();
+  ranked=[];tagsReady=false;availableTags=[];studiosReady=false;studioDirectory=[];renderTags();renderStudios();
   $('notice').textContent='無法讀取已驗證的排行榜資料，請稍後重試。';console.error(error);
 }finally{$('list').setAttribute('aria-busy','false');render();}

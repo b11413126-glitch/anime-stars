@@ -4,12 +4,13 @@ export function rankItems(items){
   // Match the official one-decimal display before comparing rating ties.
   return valid.map(x=>({...x,score:Math.round(x.score*10)/10})).sort((a,b)=>b.score-a.score||b.votes-a.votes||a.title.localeCompare(b.title,'zh-Hant')||a.id.localeCompare(b.id)).map((x,i)=>({...x,rank:i+1}));
 }
-export function selectItems(items,query,minimum,tags=[],{year='',age=''}={}){
+export function selectItems(items,query,minimum,tags=[],{year='',age='',studios=[]}={}){
   const q=query.trim().normalize('NFKC').toLocaleLowerCase('zh-TW');
   return items.filter(x=>x.votes>=minimum&&
     x.title.normalize('NFKC').toLocaleLowerCase('zh-TW').includes(q)&&
     tags.every(tag=>Array.isArray(x.tags)&&x.tags.includes(tag))&&
-    (!year||x.year?.slice(0,4)===year)&&(!age||ageCategory(x.ageRating)===age));
+    (!year||x.year?.slice(0,4)===year)&&(!age||ageCategory(x.ageRating)===age)&&
+    (!studios.length||studios.some(id=>x.studioIds?.includes(id))));
 }
 export const AGE_CATEGORIES=[['0','全年齡'],['6','6+'],['12','12+'],['15','15+'],['18','18+']];
 export function ageCategory(description){
@@ -33,16 +34,19 @@ export function readFilters(search){
   return {query:params.get('q')||'',minimum:minimumVotes(params.get('min')),
     tags:[...new Set(params.getAll('tag').filter(Boolean))],
     year:/^\d{4}$/.test(params.get('year')||'')?params.get('year'):'',
-    age:AGE_CATEGORIES.some(([id])=>id===params.get('age'))?params.get('age'):''};
+    age:AGE_CATEGORIES.some(([id])=>id===params.get('age'))?params.get('age'):'',
+    studios:[...new Set(params.getAll('studio').filter(id=>/^[1-9]\d*$/.test(id)))]};
 }
-export function filterURL(rawURL,{query,minimum,tags,year='',age=''}){
+export function filterURL(rawURL,{query,minimum,tags,year='',age='',studios=[]}){
   const url=new URL(rawURL);
-  for(const name of ['q','min','tag','year','age'])url.searchParams.delete(name);
+  for(const name of ['q','min','tag','year','age','studio'])url.searchParams.delete(name);
   if(query)url.searchParams.set('q',query);
   if(minimumVotes(minimum))url.searchParams.set('min',String(minimumVotes(minimum)));
   if(/^\d{4}$/.test(year))url.searchParams.set('year',year);
   if(AGE_CATEGORIES.some(([id])=>id===age))url.searchParams.set('age',age);
   for(const tag of [...new Set(tags)].sort((a,b)=>a.localeCompare(b,'zh-Hant')))
     url.searchParams.append('tag',tag);
+  for(const id of [...new Set(studios)].filter(id=>/^[1-9]\d*$/.test(id)).sort((a,b)=>Number(a)-Number(b)))
+    url.searchParams.append('studio',id);
   return url.href;
 }

@@ -28,6 +28,8 @@ jobs:
         run: node tools/validate_snapshot.mjs --require-classification
       - name: 核對外部題材身分、覆蓋率、授權與原始快照雜湊
         run: node tools/validate_genres.mjs
+      - name: 核對動畫製作公司職務、作品對應與覆蓋率
+        run: node tools/validate_studios.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

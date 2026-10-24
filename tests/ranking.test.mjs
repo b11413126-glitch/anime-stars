@@ -3,6 +3,7 @@ import{verifiedItems,verifiedTags}from'../site/snapshot.mjs';
 import{officialTags,readFilters,filterURL,ageCategory,workYears}from'../site/ranking.mjs';
 import{MemberBrowserCollector}from'../tools/member_browser_driver.mjs';
 import{verifiedGenres,applyGenres}from'../site/genres.mjs';
+import{verifiedStudios,applyStudios,studioOptions}from'../site/studios.mjs';
 function catalogDriver(apiIds){
   const driver=new MemberBrowserCollector({},{});
   driver.state={totalPages:null,nextCatalogPage:1,firstIds:['animeRef.php?sn=42','animeRef.php?sn=43'],catalog:[],pages:[]};
@@ -66,14 +67,14 @@ test('分類選項完整取自官方標籤，不隨目前搜尋結果消失',()=
 });
 
 test('分享網址與重新整理可還原所有條件，保留其他網址參數',()=>{
-  const filters={query:'星 & <作品>',minimum:123,tags:['奇幻','戀愛','奇幻'],year:'2023',age:'12'};
+  const filters={query:'星 & <作品>',minimum:123,tags:['奇幻','戀愛','奇幻'],year:'2023',age:'12',studios:[]};
   const url=filterURL('https://example.test/rank/?other=1&q=old&tag=old#list',filters);
   assert.deepEqual(readFilters(new URL(url).search),{...filters,tags:officialTags([{tags:filters.tags}])});
   assert.equal(new URL(url).searchParams.get('other'),'1');
   assert.equal(new URL(url).hash,'#list');
   const cleared=filterURL(url,{query:'',minimum:0,tags:[]});
   assert.equal(new URL(cleared).search,'?other=1');
-  assert.deepEqual(readFilters('?min=-10&tag=無此題材&tag=無此題材'),{query:'',minimum:0,tags:['無此題材'],year:'',age:''});
+  assert.deepEqual(readFilters('?min=-10&tag=無此題材&tag=無此題材'),{query:'',minimum:0,tags:['無此題材'],year:'',age:'',studios:[]});
   assert.equal(readFilters('?min=Infinity').minimum,0);
   assert.equal(readFilters('?min=12.8').minimum,12);
 });
@@ -174,7 +175,7 @@ test('官方年齡說明的兩種十八歲文字同組，不猜測未知說明',
 
 test('年份分級分享網址可還原，清除篩選移除對應參數',()=>{
   const url=filterURL('https://example.test/?year=2020&age=18',{query:'動畫',minimum:100,tags:[],year:'2023',age:'0'});
-  assert.deepEqual(readFilters(new URL(url).search),{query:'動畫',minimum:100,tags:[],year:'2023',age:'0'});
+  assert.deepEqual(readFilters(new URL(url).search),{query:'動畫',minimum:100,tags:[],year:'2023',age:'0',studios:[]});
   assert.equal(readFilters('?year=1800').year,'1800');
   assert.equal(readFilters('?year=abc&age=99').year,'');
   assert.equal(readFilters('?year=abc&age=99').age,'');
@@ -267,4 +268,59 @@ test('空題材須有已核對證據，缺失不能冒充無題材或官方來�
   delete genres.records[0].match;
   assert.throws(()=>verifiedGenres(snapshot,genres,mapping,hash));
   genres.source='official';assert.throws(()=>verifiedGenres(snapshot,genres,mapping,hash));
+});
+
+function studioFixture(){
+  const fixture=genreFixture(),{snapshot,genres,mapping,hash}=fixture;
+  const identities=verifiedGenres(snapshot,genres,mapping,hash),identityHash='d'.repeat(64);
+  const studios={schemaVersion:1,source:'bangumi-animation-production',sourceURL:'https://bgm.tv/',role:'动画制作',roleId:67,
+    license:'CC BY-SA 3.0',licenseURL:'https://creativecommons.org/licenses/by-sa/3.0/',
+    updatedAt:'2026-10-24T03:00:00Z',checkedFrom:'2026-10-24T01:00:00Z',checkedThrough:'2026-10-24T02:00:00Z',
+    rankingUpdatedAt:snapshot.updatedAt,rankingSHA256:hash,identitySHA256:identityHash,rankingCount:2,classifiedCount:1,
+    studios:[{id:'11',name:'公司甲',aliases:['公司甲','Test Studio'],count:1},{id:'12',name:'公司乙',aliases:['公司乙'],count:1}],
+    records:[{id:'test-a',studioIds:['11','12'],status:'classified',subjectId:1,checkedAt:'2026-10-24T01:30:00Z',
+      credits:[{id:'11',name:'公司甲',type:2,relation:'动画制作',eps:''},{id:'12',name:'公司乙',type:2,relation:'动画制作',eps:'1-3'}]},
+      {id:'test-b',studioIds:[],status:'unclassified',reason:'identity-not-confirmed'}]};
+  return {...fixture,studios,identities,identityHash};
+}
+test('共同動畫製作全數保留，未知公司不排除全榜且不變更原始資料',()=>{
+  const {snapshot,studios,identities,hash,identityHash}=studioFixture(),before=JSON.stringify(snapshot);
+  const rows=verifiedStudios(snapshot,studios,identities,hash,identityHash);
+  const items=applyStudios(rankItems(snapshot.items),rows);
+  assert.deepEqual(items[0].studioIds,['11','12']);assert.equal(items[1].studio.status,'unclassified');
+  assert.equal(selectItems(items,'',0).length,2);assert.equal(JSON.stringify(snapshot),before);
+  assert.deepEqual(selectItems(items,'',0,[],{studios:['12']}).map(x=>x.rank),[1]);
+});
+test('公司複選為聯集，再與題材、搜尋、年份、分級及人數取交集',()=>{
+  const items=rankItems([
+    {id:'a',title:'動畫A',score:5,votes:20,tags:['奇幻'],studioIds:['11'],year:'2024/01',ageRating:'一般觀眾皆可觀賞。'},
+    {id:'b',title:'動畫B',score:4.9,votes:100,tags:['奇幻','戀愛'],studioIds:['12'],year:'2023/01',ageRating:'未滿12歲者不宜觀賞。'},
+    {id:'c',title:'動畫C',score:4.8,votes:100,tags:['戀愛'],studioIds:[],year:'2023/01',ageRating:'未滿12歲者不宜觀賞。'}]);
+  assert.deepEqual(selectItems(items,'',0,[],{studios:['11','12']}).map(x=>x.rank),[1,2]);
+  assert.deepEqual(selectItems(items,'動畫',50,['奇幻','戀愛'],{year:'2023',age:'12',studios:['11','12']}).map(x=>x.rank),[2]);
+  assert.equal(selectItems(items,'',0,[],{studios:['999']}).length,0);
+});
+test('公司網址去重且拒絕非正整數，未知合法條件不偷偷取消',()=>{
+  const filters={query:'動畫',minimum:3,tags:['奇幻'],year:'2023',age:'12',studios:['12','11']};
+  const url=filterURL('https://example.test/?studio=5&other=1#list',filters);
+  assert.deepEqual(readFilters(new URL(url).search),{...filters,studios:['11','12']});
+  assert.deepEqual(readFilters('?studio=11&studio=11&studio=-2&studio=0&studio=1.2&studio=bad&studio=999').studios,['11','999']);
+  assert.equal(new URL(filterURL(url,{query:'',minimum:0,tags:[]})).search,'?other=1');
+});
+test('公司依已確認作品數排序，別名搜尋且已選公司始終置頂',()=>{
+  const directory=[{id:'1',name:'一',aliases:['Alpha'],count:2},{id:'2',name:'二',aliases:['Beta'],count:9},{id:'3',name:'三',aliases:['Gamma'],count:5}];
+  assert.deepEqual(studioOptions(directory,[]).map(x=>x.id),['2','3','1']);
+  assert.deepEqual(studioOptions(directory,['1'],'ＢＥＴＡ').map(x=>x.id),['1','2']);
+  assert.equal(directory[0].id,'1');
+});
+test('公司檔拒絕錯誤快照、作品身分、任意公司、錯誤職務與灌水覆蓋率',()=>{
+  for(const change of [s=>s.rankingSHA256='e'.repeat(64),s=>s.identitySHA256='e'.repeat(64),s=>s.records.pop(),
+    s=>s.records[1]=structuredClone(s.records[0]),s=>s.records[0].subjectId=99,
+    s=>s.records[0].credits[0].relation='制作协力',s=>s.records[0].credits[0].type=1,
+    s=>s.records[0].studioIds.push('99'),s=>s.studios[0].count=9,s=>s.classifiedCount=2,
+    s=>s.records[1].studioIds=['11'],s=>s.studios.push({id:'99',name:'無證據公司',aliases:['無證據公司'],count:1}),
+    s=>s.records[0].checkedAt='2026-10-25T00:00:00Z',s=>s.role='製作']){
+    const {snapshot,studios,identities,hash,identityHash}=studioFixture();change(studios);
+    assert.throws(()=>verifiedStudios(snapshot,studios,identities,hash,identityHash));
+  }
 });

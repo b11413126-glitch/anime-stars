@@ -57,7 +57,7 @@ function renderStudios(){
     });
     $(input.checked?'studio-selected':'studio-options').append(label);
   }
-  if(!$('studio-options').childElementCount)$('studio-options').append(el('p','studio-empty',studiosReady?'沒有符合的公司':'公司資料尚未提供'));
+  if(!$('studio-options').childElementCount)$('studio-options').append(el('p','studio-empty',studiosReady?'沒有其他符合的公司':'公司資料尚未提供'));
   $('studio-status').textContent='可複選，符合任一已選公司即可；題材與其他篩選條件仍須同時符合。僅列實際動畫製作職務，共同製作公司全部保留。';
   $('studio-search').disabled=!studiosReady;
 }

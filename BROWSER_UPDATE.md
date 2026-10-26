@@ -1,6 +1,8 @@
 # 會員瀏覽器更新程序
 
-動畫製作公司分類與題材共用預設收合面板，程序見 [STUDIO_FEATURE.md](STUDIO_FEATURE.md)。發布前另執行 `node tools/validate_studios.mjs`；新評分快照與作品對照需同步重建綁定雜湊的 studios.json。發布後匿名讀回 data.json、genres.json、studios.json 核對各自時間、數量及SHA-256。公司來源為 Bangumi 公共職務，不構成解除動畫瘋來源停止或恢復暫停排程的授權。
+分類已改為優先讀取影片頁的公開官方欄位，程序見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)。`site/official-metadata.json` 與評分分開綁定；新評分快照必須重新核對完整分類，不能沿用錯誤雜湊。另跑 `node --test tests/official-metadata.test.mjs` 及 `node tools/validate_official_metadata.mjs`；發布後匿名讀回新檔並核對時間、全部作品、官方與補證數量及SHA-256。目前含1部原已排定到期影片的明示公共補證，不能宣稱純官方題材；其他來源拒絕仍停止。2026-10-26人工分類查核不解除不穩定目錄停止紀錄，不恢復暫停月更。
+
+動畫製作公司分類與題材共用預設收合面板，程序見 [STUDIO_FEATURE.md](STUDIO_FEATURE.md)。發布前另執行 `node tools/validate_studios.mjs`；新評分快照與作品對照需同步重建綁定雜湊的 studios.json。發布後匿名讀回 data.json、genres.json、studios.json 核對各自時間、數量及SHA-256。後備公司來源為 Bangumi 公共職務，不構成解除動畫瘋來源停止或恢復暫停排程的授權。
 
 本專案的每月排名資料來源使用使用者在 Codex 內建瀏覽器正常登入的動畫瘋工作階段。GitHub Actions 只部署已通過完整驗證的靜態快照。不要匯出 Cookie、讀取瀏覽器憑證檔、設定巴哈密碼或把登入資訊放入 GitHub。
 
@@ -8,7 +10,7 @@
 
 依使用者2026-10-23指示，排名自動更新每個曆月最多成功一次；排程每月23日17:17（Asia/Taipei）。先檢查 site/data.json 的 updatedAt（Asia/Taipei 年月），再匿名讀回網站核對。當月已成功且遠端相同便安靜結束，不重複擷取。若本機已有完整有效新快照但遠端尚未發布，先補發布。2026-10-23這次人類指定的立即手動更新為單次明確授權，不得當作未來自動重試授權；本次第二輪目錄第13頁重複而停止，沒有新評分快照。
 
-分類另提供已驗證的 Bangumi 公共題材；作品年份與官方年齡說明仍取自真實評分快照。外部題材來源與授權獨立保存，不表示動畫瘋來源已恢復。先閱讀 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)。網站發布需通過 `--require-classification`，不得變更舊快照 updatedAt 冒充當日資料。新資料完整驗證才可取代；官方題材介面只有 `officialTagsVerified:true` 且逐部 tags 有效時才顯示。未保存題材的舊批次不可接續，欄位缺失不能當成官方無題材，不可從片名猜測分類。
+分類另提供已驗證的 Bangumi 公共題材；作品年份與官方年齡說明仍取自真實評分快照。外部題材來源與授權獨立保存，不表示動畫瘋來源已恢復。先閱讀 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)。網站發布需通過 `--require-classification`，不得變更舊快照 updatedAt 冒充當日資料。新資料完整驗證才可取代；評分快照內嵌官方題材只有 `officialTagsVerified:true` 且逐部tags有效時才顯示；獨立分類檔另以完整來源及原快照雜湊驗證，不修改原標記。未保存題材的舊批次不可接續，欄位缺失不能當成官方無題材，不可從片名猜測分類。
 
 開始來源請求前，先讀取 `evidence/source-blocked.json`（若存在）。當 `status` 為 `blocked` 且 `automaticRetryAllowed` 為 false 時，不得重新啟動擷取；保留前次正式快照，僅核對公開網站與本機狀態。相同阻礙若已通知，後續檢查安靜結束。需有官方來源狀態已修復的證據，或使用者明確要求重新嘗試，才解除這個來源停止紀錄；換日不代表來源問題已消失。
 
@@ -30,7 +32,7 @@ let driver = new driverModule.MemberBrowserCollector(sourceTab, receiverTab);
 5. 全新更新先建立第一個 driver，initialize() 後讀完所有 catalogStep(20)。再以同一來源 Tab 及接收器建立另一個 MemberBrowserCollector，重新 initialize() 並讀完全部目錄。兩個 driver 共用來源導覽間隔，不能平行擷取。用 await driver.confirmCatalog(secondDriver) 核對兩輪均無缺頁／重複且完整唯一 ID 集合相同，再執行兩次 probe()。可在第一輪首頁後先做小量登入診斷，但兩輪完整核對及兩次少量真實驗證都成功後，才可 await driver.begin() 開始昂貴的逐部資料核對。不能用同一個 driver 或同一輪資料冒充第二輪。來源拒絕、缺漏、重複或集合改變即停止；預檢不能替代完成後的首末頁與全目錄變動核對。
 6. 每次呼叫 `await driver.step()`，保存所有完整批次，直到 `state.offset === state.catalog.length`。`evidence/browser-current.json` 是已接受資料的實際進度。若同一日的進行中驗證被打斷，重新建立 Tab 與 driver 後，可用 `await driver.resumeImportedRun()` 接續。若跨日、目錄改變或已有錯誤，不要盲目接續舊批次；重新確認來源狀態後建立新的一日驗證。
 7. 完成後呼叫 `await driver.finish()`。它會再次核對首頁、末頁及總頁數，全部成功後才原子更新 `site/data.json`。任何來源拒絕、缺漏、無效值或目錄變動均不得以半份榜單取代舊資料。
-8. 執行 `node --test tests/ranking.test.mjs`、`python -m unittest discover -s tests -p 'test_*.py' -v` 及 `node tools/validate_snapshot.mjs --require-classification`。成功後，提交已驗證的公開作品快照至 `b11413126-glitch/anime-stars` 的 `main`。分類發布須同時提交介面、資料驗證程式及必要文件；外部題材另執行 node tools/validate_genres.mjs；只有宣稱動畫瘋官方題材時才額外執行 --require-tags。新評分快照必須同步重建綁定其雜湊的 genres.json。只上傳網站、程式與操作文件，排除 `evidence/`、`HANDOVER.md`、測試暫存檔與任何登入資料。
+8. 執行 `node --test tests/ranking.test.mjs`、`python -m unittest discover -s tests -p 'test_*.py' -v` 及 `node tools/validate_snapshot.mjs --require-classification`。成功後，提交已驗證的公開作品快照至 `b11413126-glitch/anime-stars` 的 `main`。分類發布須同時提交介面、資料驗證程式及必要文件；外部題材另執行 node tools/validate_genres.mjs；只有宣稱純動畫瘋官方題材時才額外執行 --require-tags；明示混合來源則逐列執行validate_official_metadata.mjs，不能宣稱全官方。新評分快照必須同步重建綁定其雜湊的 genres.json。只上傳網站、程式與操作文件，排除 `evidence/`、`HANDOVER.md`、測試暫存檔與任何登入資料。
 9. 等待 GitHub Pages workflow 成功，再匿名讀回網站 `data.json`，比對 `updatedAt`、作品數與資料雜湊。只有這一步成功才記錄當日發布完成。若部署失敗，保留線上舊版，保存本機有效新快照以供補發布。
 
 遇來源錯誤時立即停止這次來源請求，保存錯誤及進度。不得把登入受限條目當成無評分、忽略失敗或修改完整性標記。只在來源或登入狀態確實改變後，才重新驗證。

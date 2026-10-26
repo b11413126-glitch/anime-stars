@@ -1,0 +1,986 @@
+{
+  "/animeRef.php?sn=114235": {
+    "subjectId": 648065,
+    "subjectName": "라온의 남자",
+    "identitySources": [
+      {
+        "url": "https://hamivideo.hinet.net/product/339120.do?cs=2",
+        "fact": "合法播放方將羅溫的男人列為 Seeing Double。"
+      },
+      {
+        "url": "https://originals.laftel.net/seeingdouble",
+        "fact": "Laftel 官方原作頁以韓文 라온의 남자 呈現本作；Bangumi 相同英語別名及官方網址。"
+      }
+    ],
+    "note": "本作2026年5月以OVA周邊套裝發行，9月串流，不能因兩平台登錄月份不同而判成不同作品。只採精確動畫製作角色，排除製作出資方 Laftel 與 Kidari。"
+  },
+  "/animeRef.php?sn=113991": {
+    "subjectId": 575170,
+    "subjectName": "용한소녀",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=47442",
+        "fact": "動畫瘋作品名「神龍少女」，首播日期 2025/10/03。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/575170",
+        "fact": "公共條目中文名「神龙少女」，首播日期 2025-10-03；逐部核對繁簡文字與原名。"
+      }
+    ],
+    "note": "完整中文名與首播日期對應；只採本作 type:2 且原始職務精確為 动画制作，不借用其他作品的公司。"
+  },
+  "/animeRef.php?sn=114158": {
+    "subjectId": 640146,
+    "subjectName": "친하게 지내자",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=51107",
+        "fact": "動畫瘋作品名「好好相處吧」，首播日期 2026/05/01。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/640146",
+        "fact": "公共條目中文名「好好相处吧」，首播日期 2026-05-01；逐部核對繁簡文字與原名。"
+      }
+    ],
+    "note": "完整中文名與首播日期對應；只採本作 type:2 且原始職務精確為 动画制作，不借用其他作品的公司。"
+  },
+  "/animeRef.php?sn=114152": {
+    "subjectId": 478620,
+    "subjectName": "마루는 강쥐",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=50531",
+        "fact": "動畫瘋作品名「我家妹妹是狗狗」，首播日期 2025/11/21。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/478620",
+        "fact": "公共條目中文名「我家妹妹是狗狗」，首播日期 2025-11-21；逐部核對繁簡文字與原名。"
+      }
+    ],
+    "note": "完整中文名與首播日期對應；只採本作 type:2 且原始職務精確為 动画制作，不借用其他作品的公司。"
+  },
+  "/animeRef.php?sn=114160": {
+    "subjectId": 588920,
+    "subjectName": "제발 조용히 좀 해!",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=51149",
+        "fact": "動畫瘋作品名「拜託，安靜點！」，首播日期 2025/09/02。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/588920",
+        "fact": "公共條目中文名「拜托，安静点！」，首播日期 2025-09-02；逐部核對繁簡文字與原名。"
+      }
+    ],
+    "note": "完整中文名與首播日期對應；只採本作 type:2 且原始職務精確為 动画制作，不借用其他作品的公司。"
+  },
+  "/animeRef.php?sn=114067": {
+    "subjectId": 588555,
+    "subjectName": "독립일기",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=49106",
+        "fact": "動畫瘋作品獨立日記，首播2025/09/25。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/588555",
+        "fact": "中文名独立日记、原名독립일기、首播2025-09-25；本作infobox明列动画制作 PURPLE DUCK。"
+      }
+    ],
+    "infoboxCompany": "PURPLE DUCK",
+    "organizationEvidence": [
+      {
+        "url": "https://www.behance.net/purpleduck",
+        "fact": "PURPLE DUCK 自身公開作品集列出動畫 독립일기：LAFTEL ORIGINAL，提供首爾動畫／motion服務並連結purpleduck.co.kr；不是借用同名其他公司。"
+      }
+    ],
+    "note": "動畫製作欄位為文字，沒有person關聯ID，保存 sourceField:infobox 與未指定型別，不捏造公司person ID。"
+  },
+  "/animeRef.php?sn=113990": {
+    "subjectId": 504244,
+    "subjectName": "호랑이 들어와요",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=47337",
+        "fact": "動畫瘋作品名「老虎來了」，首播 2024/07/25。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/504244",
+        "fact": "動畫類型公共條目中文名「老虎来了」，首播 2024-07-25。不是同名真人劇或原著。"
+      }
+    ],
+    "note": "完整片名與首播日核對，只採本動畫的精確动画制作角色，完整保留共同製作。"
+  },
+  "/animeRef.php?sn=113989": {
+    "subjectId": 563095,
+    "subjectName": "피라미드 게임",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=47328",
+        "fact": "動畫瘋作品名「金字塔遊戲」，首播 2025/06/14。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/563095",
+        "fact": "動畫類型公共條目中文名「金字塔游戏」，首播 2025-06-14。不是同名真人劇或原著。"
+      }
+    ],
+    "note": "完整片名與首播日核對，只採本動畫的精確动画制作角色，完整保留共同製作。"
+  },
+  "/animeRef.php?sn=114072": {
+    "subjectId": 575225,
+    "subjectName": "노 모어 프린스",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=49177",
+        "fact": "動畫瘋完整片名「沒有王子的童話」，首播日期 2023/02/13。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/575225",
+        "fact": "動畫類型公共條目中文名「没有王子的童话」，原名「노 모어 프린스」，首播 2023-02-13；中文完整名稱逐字繁簡對應。"
+      }
+    ],
+    "note": "完整片名、動畫版本、原文及來源日期人工核對，只採本作原始動畫製作職務。兩來源首播日期相同。"
+  },
+  "/animeRef.php?sn=114071": {
+    "subjectId": 575215,
+    "subjectName": "일레나 에보이 관찰일지",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=49165",
+        "fact": "動畫瘋完整片名「伊蓮娜．埃沃的觀察日誌」，首播日期 2023/03/10。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/575215",
+        "fact": "動畫類型公共條目中文名「伊莲娜·埃沃的观察日志」，原名「일레나 에보이 관찰일지」，首播 2023-03-10；中文完整名稱逐字繁簡對應。"
+      }
+    ],
+    "note": "完整片名、動畫版本、原文及來源日期人工核對，只採本作原始動畫製作職務。兩來源首播日期相同。"
+  },
+  "/animeRef.php?sn=114068": {
+    "subjectId": 426620,
+    "subjectName": "마왕님은 죽고싶어",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=49114",
+        "fact": "動畫瘋完整片名「魔王大人今天也想死」，首播日期 2023/03/24。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/426620",
+        "fact": "動畫類型公共條目中文名「魔王大人今天也想死」，原名「마왕님은 죽고싶어」，首播 2023-03-27；中文完整名稱逐字繁簡對應。"
+      }
+    ],
+    "note": "完整片名、動畫版本、原文及來源日期人工核對，只採本作原始動畫製作職務。來源首播日相差3天，原值分別保存，不偽造日期相等。"
+  },
+  "/animeRef.php?sn=113980": {
+    "subjectId": 427004,
+    "subjectName": "4주 애인",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=47044",
+        "fact": "動畫瘋完整片名「四週戀人」，首播日期 2023/04/04。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/427004",
+        "fact": "動畫類型公共條目中文名「四周恋人」，原名「4주 애인」，首播 2023-04-04；中文完整名稱逐字繁簡對應。"
+      }
+    ],
+    "note": "完整片名、動畫版本、原文及來源日期人工核對，只採本作原始動畫製作職務。兩來源首播日期相同。"
+  },
+  "/animeRef.php?sn=114077": {
+    "subjectId": 575226,
+    "subjectName": "잊혀진 황녀는 평화롭게 살고 싶어",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=49277",
+        "fact": "動畫瘋完整片名「被遺忘的皇女只想平靜生活」，首播日期 2023/05/31。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/575226",
+        "fact": "動畫類型公共條目中文名「被遗忘的皇女只想平静生活」，原名「잊혀진 황녀는 평화롭게 살고 싶어」，首播 2023-05-31；中文完整名稱逐字繁簡對應。"
+      }
+    ],
+    "note": "完整片名、動畫版本、原文及來源日期人工核對，只採本作原始動畫製作職務。兩來源首播日期相同。"
+  },
+  "/animeRef.php?sn=114076": {
+    "subjectId": 575284,
+    "subjectName": "부탁이니 죽어주라",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=49266",
+        "fact": "動畫瘋完整片名拜託！請去死吧！，首播2023/05/31。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/575284",
+        "fact": "公共動畫條目中文名拜托！请去死吧！，首播2023-05-31，完整片名繁簡對應。"
+      }
+    ],
+    "note": "只採本作精確動畫製作角色，來源對照不使用原著漫畫。"
+  },
+  "/animeRef.php?sn=113988": {
+    "subjectId": 564865,
+    "subjectName": "붉은 여우",
+    "publicWorkCredit": "redfox-public-work-credit.json",
+    "identitySources": [
+      {
+        "url": "https://ani.gamer.com.tw/animeVideo.php?sn=47229",
+        "fact": "動畫瘋作品赤狐，首播2025/05/18。"
+      },
+      {
+        "url": "https://bgm.tv/person/81072/works#item_564865",
+        "fact": "可讀的LAFTEL公開逐作作品表列赤狐 붉은 여우、2025年5月18日、動畫製作職務。"
+      }
+    ],
+    "note": "原作品詳細頁目前不可讀；不重試或冒充已取得詳細頁，使用可正常讀取的公開逐作職務表，不以公司概括職業推測。"
+  },
+  "/animeRef.php?sn=112829": {
+    "subjectId": 230914,
+    "subjectName": "メイドインアビス 深き魂の黎明",
+    "genreFallback": true,
+    "identitySources": [
+      {
+        "url": "https://unpkg.com/bangumi-data@0.3.232/dist/data.json",
+        "fact": "固定版本SHA已核對，ACG92691與完整繁中別名唯一對應230914，原名含不含劇場版前綴是顯示名稱差異。"
+      },
+      {
+        "url": "https://api.bgm.tv/v0/subjects/230914",
+        "fact": "動畫電影，2020-01-17，與榜單2020/01作品年月、完整片名及ACG相符；原始meta_tags有冒险、奇幻。"
+      }
+    ],
+    "note": "原排名2026-10-18已驗證，並記錄2026/10/22下架。2026-10-26影片頁明示無此動畫或授權到期，不重試該網址；公共分類和KINEMA CITRUS本作動畫製作職務各自保留實際查詢時間，不冒充今日觀看資格或官方題材。"
+  },
+  "/animeRef.php?sn=113688": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113688",
+      "title": "Hello Kitty 與好朋友的超可愛大冒險",
+      "status": "verified",
+      "canonicalTitle": "Hello Kitty and Friends Supercute Adventures — Season 1",
+      "year": "2020/10",
+      "companies": [
+        {
+          "name": "Split Studio",
+          "originalRole": "2D Animation",
+          "sourceURL": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室自身作品頁列本作完整動畫實作服務。2023直接訪談中負責人稱為Sanrio US製作約60集，導演稱自第二季執導、剛開始第五季且合作流程已持續超過四季；兩份來源共同支持第一至第四季實際由Split Studio製作。",
+          "checkedAt": "2026-10-26T07:04:56Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.youtube.com/watch?v=pRJ-Dai3oB0",
+          "fact": "Sanrio 官方頻道第一季第一集公開標題列本作與 S1 EP1，發布日2020-10-26，符合本地2020/10條目。"
+        },
+        {
+          "url": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室作品頁使用本作完整英文名稱，嵌入官方第一季第13集；不是2008年3D版本。"
+        },
+        {
+          "url": "https://www.toonboom.com/animating-the-iconic-cast-of-hello-kitty-friends-with-split-studio-and-sanrio",
+          "fact": "2023-07-07刊出的工作室負責人與系列導演直接受訪，明確敘及第一至第四季及第五季開工，限定本次前四季製作範圍。"
+        }
+      ],
+      "scopeNote": "僅2020年起Supercute Adventures第1季。第一至第四季有涵蓋多季的直接製作陳述，未從第一季推定新季沿用；Sanrio是IP／委託方，未列動畫公司。不採2008《The Adventures of Hello Kitty & Friends》的公司。"
+    }
+  },
+  "/animeRef.php?sn=113732": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113732",
+      "title": "Hello Kitty 與好朋友的超可愛大冒險 第二季",
+      "status": "verified",
+      "canonicalTitle": "Hello Kitty and Friends Supercute Adventures — Season 2",
+      "year": "2021/04",
+      "companies": [
+        {
+          "name": "Split Studio",
+          "originalRole": "2D Animation",
+          "sourceURL": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室自身作品頁列本作完整動畫實作服務。2023直接訪談中負責人稱為Sanrio US製作約60集，導演稱自第二季執導、剛開始第五季且合作流程已持續超過四季；兩份來源共同支持第一至第四季實際由Split Studio製作。",
+          "checkedAt": "2026-10-26T07:04:56Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.sanrio.com/blogs/sanrio/hello-friend-q-a-with-mairghread-scott-writer-on-hello-kitty-and-friends-supercute-adventures",
+          "fact": "Sanrio 官方2021-04-14編劇訪談明列當天為第二季首播，第一集 Speedy Sweets；符合本地2021/04第二季。"
+        },
+        {
+          "url": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室作品頁使用本作完整英文名稱，嵌入官方第一季第13集；不是2008年3D版本。"
+        },
+        {
+          "url": "https://www.toonboom.com/animating-the-iconic-cast-of-hello-kitty-friends-with-split-studio-and-sanrio",
+          "fact": "2023-07-07刊出的工作室負責人與系列導演直接受訪，明確敘及第一至第四季及第五季開工，限定本次前四季製作範圍。"
+        }
+      ],
+      "scopeNote": "僅2020年起Supercute Adventures第2季。第一至第四季有涵蓋多季的直接製作陳述，未從第一季推定新季沿用；Sanrio是IP／委託方，未列動畫公司。不採2008《The Adventures of Hello Kitty & Friends》的公司。"
+    }
+  },
+  "/animeRef.php?sn=113734": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113734",
+      "title": "Hello Kitty 與好朋友的超可愛大冒險 第三季",
+      "status": "verified",
+      "canonicalTitle": "Hello Kitty and Friends Supercute Adventures — Season 3",
+      "year": "2021/08",
+      "companies": [
+        {
+          "name": "Split Studio",
+          "originalRole": "2D Animation",
+          "sourceURL": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室自身作品頁列本作完整動畫實作服務。2023直接訪談中負責人稱為Sanrio US製作約60集，導演稱自第二季執導、剛開始第五季且合作流程已持續超過四季；兩份來源共同支持第一至第四季實際由Split Studio製作。",
+          "checkedAt": "2026-10-26T07:04:56Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.youtube.com/watch?v=B3NQQVVadtM",
+          "fact": "Sanrio 官方頻道第三季預告的公開搜尋索引說明列8月25日首播，符合本地2021/08第三季；影片頁全文未取得，沒有播放或登入。"
+        },
+        {
+          "url": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室作品頁使用本作完整英文名稱，嵌入官方第一季第13集；不是2008年3D版本。"
+        },
+        {
+          "url": "https://www.toonboom.com/animating-the-iconic-cast-of-hello-kitty-friends-with-split-studio-and-sanrio",
+          "fact": "2023-07-07刊出的工作室負責人與系列導演直接受訪，明確敘及第一至第四季及第五季開工，限定本次前四季製作範圍。"
+        }
+      ],
+      "scopeNote": "僅2020年起Supercute Adventures第3季。第一至第四季有涵蓋多季的直接製作陳述，未從第一季推定新季沿用；Sanrio是IP／委託方，未列動畫公司。不採2008《The Adventures of Hello Kitty & Friends》的公司。"
+    }
+  },
+  "/animeRef.php?sn=113741": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113741",
+      "title": "Hello Kitty 與好朋友的超可愛大冒險 第四季",
+      "status": "verified",
+      "canonicalTitle": "Hello Kitty and Friends Supercute Adventures — Season 4",
+      "year": "2022/01",
+      "companies": [
+        {
+          "name": "Split Studio",
+          "originalRole": "2D Animation",
+          "sourceURL": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室自身作品頁列本作完整動畫實作服務。2023直接訪談中負責人稱為Sanrio US製作約60集，導演稱自第二季執導、剛開始第五季且合作流程已持續超過四季；兩份來源共同支持第一至第四季實際由Split Studio製作。",
+          "checkedAt": "2026-10-26T07:04:56Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.youtube.com/watch?v=tCRj-CWuMDM",
+          "fact": "Sanrio 官方頻道第四季預告於2022-01-03發布，公開搜尋索引說明列1月5日首播，符合本地2022/01第四季；影片頁全文未取得，沒有播放或登入。"
+        },
+        {
+          "url": "https://splitstudio.tv/en/trabalhos/hello-kitty-and-friends-supercute-adventures/",
+          "fact": "工作室作品頁使用本作完整英文名稱，嵌入官方第一季第13集；不是2008年3D版本。"
+        },
+        {
+          "url": "https://www.toonboom.com/animating-the-iconic-cast-of-hello-kitty-friends-with-split-studio-and-sanrio",
+          "fact": "2023-07-07刊出的工作室負責人與系列導演直接受訪，明確敘及第一至第四季及第五季開工，限定本次前四季製作範圍。"
+        }
+      ],
+      "scopeNote": "僅2020年起Supercute Adventures第4季。第一至第四季有涵蓋多季的直接製作陳述，未從第一季推定新季沿用；Sanrio是IP／委託方，未列動畫公司。不採2008《The Adventures of Hello Kitty & Friends》的公司。"
+    }
+  },
+  "/animeRef.php?sn=112857": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=112857",
+      "title": "殘念生物事典",
+      "status": "verified",
+      "canonicalTitle": "ざんねんないきもの事典（2018 TV原版・第1シリーズ）",
+      "year": "2018/08",
+      "companies": [
+        {
+          "name": "Fanworks",
+          "originalRole": "アニメーション制作",
+          "sourceURL": "https://www.takahashishoten.co.jp/wp/wp-content/uploads/2018/05/fix%E3%81%96%E3%82%93%E3%81%AD%E3%82%93%E3%81%AA%E3%81%84%E3%81%8D%E3%82%82%E3%81%AE%E4%BA%8B%E5%85%B8%E3%82%A2%E3%83%8B%E3%83%A1%E5%8C%96%E6%B1%BA%E5%AE%9A%EF%BC%81.pdf",
+          "fact": "原書出版社高橋書店2018-06-20新聞稿頁1直接說明動畫製作由株式会社ファンワークス負責；並確認2018-08-06 NHK Eテレ開始播出、全10話。",
+          "checkedAt": "2026-10-26T07:04:56Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.takahashishoten.co.jp/wp/wp-content/uploads/2018/05/fix%E3%81%96%E3%82%93%E3%81%AD%E3%82%93%E3%81%AA%E3%81%84%E3%81%8D%E3%82%82%E3%81%AE%E4%BA%8B%E5%85%B8%E3%82%A2%E3%83%8B%E3%83%A1%E5%8C%96%E6%B1%BA%E5%AE%9A%EF%BC%81.pdf",
+          "fact": "出版社當年原始PDF明列日文作品名、2018-08-06 NHK Eテレ播出、全10話，吻合本地2018/08原版。"
+        },
+        {
+          "url": "https://fanworks.co.jp/project/zannennaikimono/",
+          "fact": "Fanworks作品頁公開搜尋索引列2018與第一系列5分×10話及Fanworks動畫製作；直接開啟回503，主要證據採完整讀取的出版社PDF。"
+        }
+      ],
+      "scopeNote": "僅指定2018電視原版。NHK、NHK Enterprises的一般制作／制作著作職務未轉成動畫公司；沒有使用2022劇場版替代原版證據。"
+    }
+  },
+  "/animeRef.php?sn=113007": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113007",
+      "title": "有貓注意！",
+      "status": "verified",
+      "canonicalTitle": "Барбоскины на даче / The Barkers: Mind the Cats!（2020電影）",
+      "year": "2020/12",
+      "companies": [
+        {
+          "name": "Melnitsa Animation Studio",
+          "originalRole": "Студия анимационного кино «Мельница»",
+          "sourceURL": "https://licensingrussia.ru/article/11823-barboskiny-na-dache-pokazhut-v-turtsii/",
+          "fact": "Melnitsa授權代理公關室署名新聞稿直接稱本片由動畫電影工作室Мельница與電影公司CTB製作；銷售方Luminescence亦列Melnitsa為本片製作公司，兩者共同支持實際動畫工作室身分。",
+          "checkedAt": "2026-10-26T07:04:56Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://hamivideo.hinet.net/product/187921.do?cs=2",
+          "fact": "臺灣授權影音商品頁直接對應中文《有貓注意！》與英文片名，列2020、76分鐘、Elena Galdobina，故事為狗兄妹祖父家度假及兩貓圖謀噴射背包。只讀公開metadata，未登入、播放或操作私人功能。"
+        },
+        {
+          "url": "https://www.luminescencefilm.com/projects/animation/the-barkers-mind-the-cats/",
+          "fact": "本片國際銷售方官方片頁列同英文名稱、導演與劇情，2020-12-24上映，分列Production Companies與Distributor。"
+        },
+        {
+          "url": "https://licensingrussia.ru/article/11823-barboskiny-na-dache-pokazhut-v-turtsii/",
+          "fact": "Melnitsa官方公關室提供的2023-07-19新聞稿將本片俄文名、動畫長片與Melnitsa工作室直接相連，發行公司另列。"
+        },
+        {
+          "url": "https://aakr.ru/wp-content/uploads/2021/06/catalog-of-russian-animation_rafa-2021_compressed-1.pdf#page=41",
+          "fact": "俄羅斯動畫協會2021目錄Melnitsa會員介紹（印刷頁41）將本片英文名稱列為2020完成長片，補證工作室與版本；未借TV系列欄位當電影職員證據。"
+        }
+      ],
+      "scopeNote": "限2020-12-24上映長片，非TV系列或2022《Барбоскины Team》。CTB僅有一般電影製作證據，Sony Pictures、Luminescence及臺灣代理皆未收為動畫公司。"
+    }
+  },
+  "/animeRef.php?sn=113208": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113208",
+      "gamerId": "113208",
+      "title": "名偵探柯南 警察學校篇 Wild Police Story CASE.諸伏景光",
+      "status": "verified",
+      "canonicalTitle": "警察学校編 Wild Police Story CASE.諸伏景光",
+      "year": 2022,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "128409",
+        "premiereDate": "2022-10-29"
+      },
+      "companies": [
+        {
+          "name": "トムス・エンタテインメント",
+          "originalRole": "アニメ制作",
+          "sourceURL": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本篇系列動畫漫畫的官方書籍頁，將 TMS 明確列為動畫製作；介紹說明其內容來自 2021 年起不定期播出的警察學校篇動畫，含各話監督訪談、設定、分鏡及原畫。",
+          "checkedAt": "2026-10-26T07:05:42Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.ytv.co.jp/conan/archive/k20221029.html",
+          "fact": "讀賣電視官方事件頁逐篇列出本篇日文篇名、第 1061 話與播出日 2022-10-29，和既有動畫瘋紀錄日期、CASE 角色吻合。"
+        },
+        {
+          "url": "https://www.ytv.co.jp/conan/police/",
+          "fact": "警察學校篇官方特設頁在同一個動畫作品頁內分別列出松田陣平、伊達航、萩原研二、諸伏景光四篇的故事和播出月日。"
+        },
+        {
+          "url": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本作動畫漫畫頁的原作人物與警察學校篇全名相同，並明示 2021 年起不定期播映動畫及各話資料；動畫製作信用指向警察學校篇本身。"
+        }
+      ],
+      "scopeProof": "使用警察學校篇自身的明確動畫製作信用，配合本篇官方逐集頁及警察學校篇官方頁確認涵蓋；沒有從柯南母系列、電影或零的日常借用公司。",
+      "note": "可採本作動畫製作 TMS；讀賣電視雖為播出／製作參與方，此證據未將其列為動畫製作公司，因此不加入。"
+    }
+  },
+  "/animeRef.php?sn=113207": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113207",
+      "gamerId": "113207",
+      "title": "名偵探柯南 警察學校篇 Wild Police Story CASE.萩原研二",
+      "status": "verified",
+      "canonicalTitle": "警察学校編 Wild Police Story CASE.萩原研二",
+      "year": 2022,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "128408",
+        "premiereDate": "2022-05-07"
+      },
+      "companies": [
+        {
+          "name": "トムス・エンタテインメント",
+          "originalRole": "アニメ制作",
+          "sourceURL": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本篇系列動畫漫畫的官方書籍頁，將 TMS 明確列為動畫製作；介紹說明其內容來自 2021 年起不定期播出的警察學校篇動畫，含各話監督訪談、設定、分鏡及原畫。",
+          "checkedAt": "2026-10-26T07:05:42Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.ytv.co.jp/conan/archive/k20220507.html",
+          "fact": "讀賣電視官方事件頁逐篇列出本篇日文篇名、第 1042 話與播出日 2022-05-07，和既有動畫瘋紀錄日期、CASE 角色吻合。"
+        },
+        {
+          "url": "https://www.ytv.co.jp/conan/police/",
+          "fact": "警察學校篇官方特設頁在同一個動畫作品頁內分別列出松田陣平、伊達航、萩原研二、諸伏景光四篇的故事和播出月日。"
+        },
+        {
+          "url": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本作動畫漫畫頁的原作人物與警察學校篇全名相同，並明示 2021 年起不定期播映動畫及各話資料；動畫製作信用指向警察學校篇本身。"
+        }
+      ],
+      "scopeProof": "使用警察學校篇自身的明確動畫製作信用，配合本篇官方逐集頁及警察學校篇官方頁確認涵蓋；沒有從柯南母系列、電影或零的日常借用公司。",
+      "note": "可採本作動畫製作 TMS；讀賣電視雖為播出／製作參與方，此證據未將其列為動畫製作公司，因此不加入。"
+    }
+  },
+  "/animeRef.php?sn=113163": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113163",
+      "gamerId": "113163",
+      "title": "名偵探柯南 警察學校篇 Wild Police Story CASE.伊達航",
+      "status": "verified",
+      "canonicalTitle": "警察学校編 Wild Police Story CASE.伊達航",
+      "year": 2022,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "128337",
+        "premiereDate": "2022-03-12"
+      },
+      "companies": [
+        {
+          "name": "トムス・エンタテインメント",
+          "originalRole": "アニメ制作",
+          "sourceURL": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本篇系列動畫漫畫的官方書籍頁，將 TMS 明確列為動畫製作；介紹說明其內容來自 2021 年起不定期播出的警察學校篇動畫，含各話監督訪談、設定、分鏡及原畫。",
+          "checkedAt": "2026-10-26T07:05:42Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.ytv.co.jp/conan/archive/k20220312.html",
+          "fact": "讀賣電視官方事件頁逐篇列出本篇日文篇名、第 1038 話與播出日 2022-03-12，和既有動畫瘋紀錄日期、CASE 角色吻合。"
+        },
+        {
+          "url": "https://www.ytv.co.jp/conan/police/",
+          "fact": "警察學校篇官方特設頁在同一個動畫作品頁內分別列出松田陣平、伊達航、萩原研二、諸伏景光四篇的故事和播出月日。"
+        },
+        {
+          "url": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本作動畫漫畫頁的原作人物與警察學校篇全名相同，並明示 2021 年起不定期播映動畫及各話資料；動畫製作信用指向警察學校篇本身。"
+        }
+      ],
+      "scopeProof": "使用警察學校篇自身的明確動畫製作信用，配合本篇官方逐集頁及警察學校篇官方頁確認涵蓋；沒有從柯南母系列、電影或零的日常借用公司。",
+      "note": "可採本作動畫製作 TMS；讀賣電視雖為播出／製作參與方，此證據未將其列為動畫製作公司，因此不加入。"
+    }
+  },
+  "/animeRef.php?sn=113162": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113162",
+      "gamerId": "113162",
+      "title": "名偵探柯南 警察學校篇 Wild Police Story CASE.松田陣平",
+      "status": "verified",
+      "canonicalTitle": "警察学校編 Wild Police Story CASE.松田陣平",
+      "year": 2021,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "120495",
+        "premiereDate": "2021-12-04"
+      },
+      "companies": [
+        {
+          "name": "トムス・エンタテインメント",
+          "originalRole": "アニメ制作",
+          "sourceURL": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本篇系列動畫漫畫的官方書籍頁，將 TMS 明確列為動畫製作；介紹說明其內容來自 2021 年起不定期播出的警察學校篇動畫，含各話監督訪談、設定、分鏡及原畫。",
+          "checkedAt": "2026-10-26T07:05:42Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.ytv.co.jp/conan/archive/k20211204.html",
+          "fact": "讀賣電視官方事件頁逐篇列出本篇日文篇名、第 1029 話與播出日 2021-12-04，和既有動畫瘋紀錄日期、CASE 角色吻合。"
+        },
+        {
+          "url": "https://www.ytv.co.jp/conan/police/",
+          "fact": "警察學校篇官方特設頁在同一個動畫作品頁內分別列出松田陣平、伊達航、萩原研二、諸伏景光四篇的故事和播出月日。"
+        },
+        {
+          "url": "https://shogakukan-comic.jp/book?jdcn=098536310000d0000000",
+          "fact": "小學館本作動畫漫畫頁的原作人物與警察學校篇全名相同，並明示 2021 年起不定期播映動畫及各話資料；動畫製作信用指向警察學校篇本身。"
+        }
+      ],
+      "scopeProof": "使用警察學校篇自身的明確動畫製作信用，配合本篇官方逐集頁及警察學校篇官方頁確認涵蓋；沒有從柯南母系列、電影或零的日常借用公司。",
+      "note": "可採本作動畫製作 TMS；讀賣電視雖為播出／製作參與方，此證據未將其列為動畫製作公司，因此不加入。"
+    }
+  },
+  "/animeRef.php?sn=113992": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113992",
+      "gamerId": "113992",
+      "title": "超級秘密",
+      "status": "verified",
+      "canonicalTitle": "슈퍼 시크릿",
+      "year": 2020,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "149423",
+        "premiereDate": "2020-05-30"
+      },
+      "companies": [
+        {
+          "name": "STUDIO SHELTER",
+          "originalRole": "실제 제작",
+          "sourceURL": "https://ridicorp.com/story/ridi-animation-supersecret/",
+          "fact": "權利方 2020 年製作專文直接指出 Studio Shelter 是負責本作實際製作的國內公司，並另行討論投資與股權，足以區分動畫製作與單純出資。",
+          "checkedAt": "2026-10-26T07:05:42Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://ridicorp.com/story/ridi-animation-supersecret/",
+          "fact": "RIDI 2020-12-04 官方專文描述同名漫畫改編動畫於 2020 年五月首次公開，與本地紀錄的 2020 年五月版本吻合。"
+        },
+        {
+          "url": "https://studioshelter.co.kr/?p=4144",
+          "fact": "Studio Shelter 官方本作頁標為 2020–2021，列原作 EON/Naver Webtoon 及完整 Production 部門、動畫師與後製人員；企劃／投資 RIDI、企劃 Laftel 分開標示。"
+        }
+      ],
+      "note": "只收實際承製公司 Studio Shelter，不把 RIDI 投資、Laftel 企劃或頁面誤留的 Client SUPERCELL 字串當動畫製作公司。"
+    }
+  },
+  "/animeRef.php?sn=113982": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113982",
+      "gamerId": "113982",
+      "title": "那個夏天",
+      "status": "verified",
+      "canonicalTitle": "그 여름",
+      "year": 2021,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "149200",
+        "premiereDate": "2021-09-04",
+        "sourceTitle": "那個夏天 [1]"
+      },
+      "companies": [
+        {
+          "name": "Red Dog Culture House",
+          "originalRole": "제작",
+          "sourceURL": "https://ridicorp.com/2021/07/the_summer_animation/",
+          "fact": "RIDI 2021 年動畫製作公告在明確談本作動畫時，指出韓志原負責導演、Red Dog Culture House 負責製作，並將本版界定為 Laftel 公開的七集作品。",
+          "checkedAt": "2026-10-26T07:05:42Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://ridicorp.com/2021/07/the_summer_animation/",
+          "fact": "2021-07-06 第一方公告明列崔恩榮同名短篇原作、韓志原導演、七集 Laftel 網路動畫規格及當年公開計畫，並列角色與聲優。"
+        },
+        {
+          "url": "https://reddogch.com/works/?cat_no=1&idx=21&mode=view",
+          "fact": "Red Dog 官方本作頁列韓文與英文 The Summer、動畫類別、Laftel/Netflix 平台和 Release Year 2021。"
+        }
+      ],
+      "versionProof": "本地作品紀錄為 2021-09-04 首播且來源標題為第 1 集；第一方製作信用直接屬於 2021 七集網路版。沒有使用 2023 電影總集篇信用反推。",
+      "publicWikiLead": {
+        "url": "https://bgm.tv/subject/386772",
+        "fact": "公開作品條目為同名 2021-09-04 七集 WEB 動畫，Red Dog Culture House 動畫制作；另有獨立總集篇關聯，供主代理集中 API 核驗身分用。"
+      },
+      "note": "公司信用已直接取得 2021 WEB 版第一方證據。2023 電影包裝不是本輪信用依據。"
+    }
+  },
+  "/animeRef.php?sn=113731": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113731",
+      "title": "海豚男孩",
+      "status": "verified",
+      "canonicalTitle": "Dolphin Boy（Mohammad Kheirandish，2022）",
+      "year": "2022",
+      "snapshotYear": "2022/04",
+      "companies": [
+        {
+          "name": "SkyFrame Studio",
+          "originalRole": "動畫工作室自述 independently produced and released a feature film Dolphin Boy；不是單獨 Animation Production credit",
+          "sourceURL": "https://www.skyframestudio.ru/en/about",
+          "fact": "SkyFrame 自家 About 介紹動畫製作業務，並明說本工作室自行製作本片；自家本片作品頁另列 2022 年動畫長片。由工作室對本片的自行製作聲明判定實際動畫製作。",
+          "checkedAt": "2026-10-26T07:05:48Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.twedu.com.tw/title/1335",
+          "fact": "授權公播發行商將海豚男孩對應 Dolphin Boy、導演穆罕默德科赫讓迪斯，故事為雪球救起並陪伴人類男孩。"
+        },
+        {
+          "url": "https://www.siff.com/content?aid=101230601205237434058269682569221497",
+          "fact": "上海國際電影節本片介紹對應導演 Mohammad Kheirandish、同情節，記錄2022年4月公映。"
+        },
+        {
+          "url": "https://www.skyframestudio.ru/en/dolphinboy",
+          "fact": "SkyFrame 自家作品頁為2022年動畫長片 Dolphin Boy。"
+        }
+      ],
+      "note": "已排除2024同名影集及2025續集。About敘事寫2021，與本片頁2022和影展2022年4月公映衝突，電影年份採後兩者；不隱去衝突。Agah Film自述只負責土耳其版本改編、配音與上映，未列入動畫製作公司。"
+    }
+  },
+  "/animeRef.php?sn=113175": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113175",
+      "title": "垃圾總動員",
+      "status": "verified",
+      "canonicalTitle": "Trash / Trash - La leggenda della piramide magica（Francesco Dafano／Luca Della Grotta，2020）",
+      "year": "2020",
+      "snapshotYear": "2020/10",
+      "companies": [
+        {
+          "name": "AL ONE",
+          "originalRole": "produzione（Filmitalia）；公司內本片3D Artist / Character modeller／Lead Modeller（員工自家履歷）；非原始Animation Production欄位",
+          "sourceURL": "https://filmitalia.org/it/film/127405/",
+          "fact": "Filmitalia本片主製作列Al One；首席建模師第一人稱履歷在2016–2019 AL-One任職下明列本片主配角建模逾三年；Regione Lazio確認公司提供3D動畫與render作業。三份第一方資料綜合支持本片實際動畫製作責任，而非僅出資；此判定沒有改寫原文職務。",
+          "checkedAt": "2026-10-26T07:05:48Z",
+          "supportingSources": [
+            {
+              "url": "https://www.carloturrio.com/download/CV_CarloTurrio_ENG.pdf",
+              "fact": "第3頁AL-One任職條目明列Trash主配角Lead Modeller；證明本公司內實際主要CGI工序。"
+            },
+            {
+              "url": "https://www.lazioeuropa.it/beneficiari-2014-20/azienda/al-one/",
+              "fact": "Regione Lazio確認公司提供3D動畫、VFX及render farm，支持其實作組織身分。"
+            }
+          ],
+          "adoptionBasis": "綜合第一方證據確認主製作與實際動畫工序，不要求單一頁必須有英文Animation Production字樣；不將一般Production自動映射。"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.twedu.com.tw/title/1351",
+          "fact": "智軒中英片名對照、兩導演及88分鐘，對應義大利2020動畫而非2014真人片。"
+        },
+        {
+          "url": "https://filmitalia.org/it/film/127405/",
+          "fact": "Filmitalia列Trash、兩導演、2020、88分、動畫、2020-10-16上映；製作欄為Al One，發行與補助另列。"
+        }
+      ],
+      "companyCandidates": [
+        {
+          "name": "Primal Shape",
+          "originalRole": "Animation（Client與Production Agency均為Al-One）",
+          "sourceURL": "https://www.primalshapestudio.com/trash-the-castaways/",
+          "fact": "公司本片作品頁明列Animation=Primal Shape、與Al-One合作十個月。其Works自述2018起為角色動畫服務，不能把後來完整製作能力倒推本片。",
+          "checkedAt": "2026-10-26T07:05:48Z",
+          "supportingSources": [
+            {
+              "url": "https://www.primalshapestudio.com/category/works/",
+              "fact": "公司自述最初為角色動畫服務，後來擴成完整動畫製作公司。"
+            },
+            {
+              "url": "https://vimeo.com/503474938",
+              "fact": "公司2021官方reel列本片並限定自身責任為Animation only。"
+            }
+          ],
+          "limitation": "動畫參與已證，未證超出本專案排除的外包／製作協力範圍，不列為主要動畫製作。"
+        }
+      ],
+      "note": "AL ONE依三份第一方證據綜合確認實際本片製作責任；原文Production與主要CGI工序分開保存，不假稱raw動畫製作。Primal Shape保留為未採用服務候選。公司官網timeout，未採失敗頁作證。沒有將發行Notorious、銷售Pink Parrot或補助機構當動畫公司。"
+    }
+  },
+  "/animeRef.php?sn=113174": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113174",
+      "title": "海盜船長與魔法鑽石",
+      "status": "verified",
+      "canonicalTitle": "Captain Sabertooth and the Magic Diamond / Kaptein Sabeltann og den magiske diamant（2019）",
+      "year": "2019",
+      "snapshotYear": "2019/09",
+      "companies": [
+        {
+          "name": "Qvisten Animation",
+          "originalRole": "Production（Giffoni本片表）；自家Film & TV作品目錄、Technique=CGI",
+          "sourceURL": "https://www.qvisten.no/work/captain-sabertooth/",
+          "fact": "Qvisten自家完整電影作品頁明列本片、雙導演、CGI與2019-09-27挪威首映。Giffoni本片表亦列Production=Qvisten Animation，另列發行商；公司自述為動畫製作工作室，足證本片主要動畫製作。",
+          "checkedAt": "2026-10-26T07:05:48Z",
+          "supportingSources": [
+            {
+              "url": "https://www.giffonifilmfestival.it/en/film-edition-2021/5034-captain-sabertooth-and-the-magic-diamond.html",
+              "fact": "本片81分、同原名及雙導演，Production=Qvisten Animation；發行分列。"
+            },
+            {
+              "url": "https://www.qvisten.no/about-us/",
+              "fact": "公司自己介紹創立為動畫工作室並持續由自有藝術家製作作品。"
+            }
+          ]
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.twedu.com.tw/title/1359",
+          "fact": "智軒直接對照中文片名／英文片名、Rasmus A. Sivertsen及Marit Moum Aune、81分。"
+        },
+        {
+          "url": "https://www.qvisten.no/work/captain-sabertooth/",
+          "fact": "原工作室作品頁同雙導演／英文片名／挪威原名，明載2019-09-27挪威首映。"
+        }
+      ],
+      "companyCandidates": [
+        {
+          "name": "Lunanime",
+          "originalRole": "未取得第一方本片職務",
+          "sourceURL": "https://www.lunanime.be/",
+          "fact": "官方入口重導至改版中的Lumière首頁；沒有本片動畫職務。",
+          "checkedAt": "2026-10-26T07:05:48Z",
+          "limitation": "搜尋有共同製作線索，但未證本片動畫實作而非財務／Tax Shelter，不發布。"
+        }
+      ],
+      "note": "Giffoni頁Production Year寫2020；採原工作室明列的2019首映。只採已證公司，未把Sola Media、Nordisk Film Invest等發行／投資方混入。Lunanime尚未證明是共同動畫製作。"
+    }
+  },
+  "/animeRef.php?sn=113178": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=113178",
+      "title": "衝鋒戰士：恐龍世代",
+      "status": "verified",
+      "canonicalTitle": "극장판 헬로카봇 : 백악기 시대 / Hello Carbot the Movie: The Cretaceous Period（2018；台灣英文別名Stone Age）",
+      "year": "2018",
+      "snapshotYear": "2021/04",
+      "companies": [
+        {
+          "name": "CHOIROCK CONTENTS FACTORY",
+          "originalRole": "Production（KOFIC索引）；業務애니메이션 제작（公司介紹）；總監督個人統籌實務（本片第一人稱訪談）",
+          "sourceURL": "https://m.koreanfilm.or.kr/eng/films/index/filmsView.jsp?movieCd=20186501",
+          "fact": "KOFIC本片資料列公司為Production；公司自己明列動畫製作業務。本片總監督第一人稱說統合編劇、動畫導演及圖像導演、帶領年輕動畫師，本片製作十個月並在外部實質投資前已開始製作。這是實際製作統籌補強，不只是出資線索。",
+          "checkedAt": "2026-10-26T07:05:48Z",
+          "supportingSources": [
+            {
+              "url": "https://choirock.com/m11.php",
+              "fact": "公司介紹業務明列애니메이션 제작，員工120人。"
+            },
+            {
+              "url": "https://choirock.com/m13.php",
+              "fact": "公司歷史明列2018.08本片上映。"
+            },
+            {
+              "url": "https://cine21.com/news/view/?mag_id=90935",
+              "fact": "本片總監督第一人稱談統籌動畫／圖像人員、十個月本片製作及投資前已製作；公司任職關聯由訪談導言交代。"
+            }
+          ],
+          "adoptionBasis": "公司動畫製作業務、本片主製作名列、總監督第一人稱動畫團隊統籌與本片十個月製作實務共同支持實際動畫製作責任；不假稱原始Animation Production職務。"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://www.vscinemas.com.tw/vsweb/film/detail.aspx?id=5143",
+          "fact": "上映院線列台灣片名、英文Stone Age、導演Kim JinCheol、84分鐘與2021-04-01台灣上映；情節為恐龍VR與穿越恐龍時代。"
+        },
+        {
+          "url": "https://m.koreanfilm.or.kr/eng/films/index/filmsView.jsp?movieCd=20186501",
+          "fact": "KOFIC索引列The Cretaceous Period、同導演與情節、84分及2018-08-01韓國上映；直接頁timeout，限作身分補充。"
+        },
+        {
+          "url": "https://movie.choirock.com/",
+          "fact": "原片Choirock官方電影目錄明列韓文片名、84分及2018-08-01韓國上映。"
+        }
+      ],
+      "companyCandidates": [
+        {
+          "name": "Studio W.BABA",
+          "originalRole": "제작 개봉（公司履歷搜尋索引）；CEO本人Producer（公司簡報索引）",
+          "sourceURL": "https://www.gamejob.co.kr/Company/Detail?M=32174919",
+          "fact": "公司自填履歷索引明列2018.08本片製作上映；公司3D動畫身份由KOCCA資料支持，但尚缺可直接採用的公司本片主動畫職務。",
+          "checkedAt": "2026-10-26T07:05:48Z",
+          "supportingSources": [
+            {
+              "url": "https://welcon.kocca.kr/en/directory/company/studio-wbaba--181",
+              "fact": "公司公開介紹提供3D動畫製作；不是本片職務表。"
+            },
+            {
+              "url": "https://www.ilovecharacter.com/news/newsview.php?ncode=1065601142851454",
+              "fact": "W.BABA導演第一人稱訪談談本片製作與影像品質，是實作線索，但沒有公司主動畫職務欄。"
+            }
+          ],
+          "limitation": "Gamejob直接頁Cache miss，公司簡報502；個人producer與系列製作身份均不足自動採用。另有非採用片尾轉錄將公司列製作協力，需官方角色表釐清。"
+        }
+      ],
+      "note": "台灣2021上映對應韓國2018第一部電影。依本片三份第一方證據綜合確認Choirock實際動畫製作責任；原始Production、公司動畫業務與總監督個人統籌實務分開保存，不假稱Animation Production原文。W.BABA協力與Invictus出資/共同製作均未自動採用。"
+    }
+  },
+  "/animeRef.php?sn=57096": {
+    "firstPartyEvidence": {
+      "id": "/animeRef.php?sn=57096",
+      "gamerId": "57096",
+      "title": "頭文字 D 2nd stage",
+      "status": "verified",
+      "canonicalTitle": "頭文字[イニシャル]D Second Stage",
+      "year": 1999,
+      "mediaType": "animation",
+      "animationStudioApplicability": "applicable",
+      "localIdentity": {
+        "evidenceFile": "outputs/anime-stars/evidence/official-metadata-progress.json",
+        "acgId": "57096",
+        "premiereDate": "1999-10-08",
+        "sourceTitle": "頭文字 D 2nd stage [1]"
+      },
+      "companies": [
+        {
+          "name": "パステル",
+          "originalRole": "制作",
+          "sourceURL": "https://animestore.docomo.ne.jp/animestore/ci_pc?workId=24227",
+          "fact": "合法播放方本作專頁明列全13話、製作年1999、導演政木伸一、人物設計佐藤正樹，完整STAFF把パステル列為制作，另把avex group列為製作協力、Prime Direction與OB企画列為製作；本處制作屬動畫本體承製信用，不是出資名單。保留來源原角色，不改寫為原頁未使用的アニメーション制作。",
+          "checkedAt": "2026-10-26T07:51:09Z"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://animestore.docomo.ne.jp/animestore/ci_pc?workId=24227",
+          "fact": "同頁本作名為Second Stage，全13話、1999年，導演政木伸一與Evo車隊Emperor故事，可明確區分第一期、Third Stage電影與第四期。"
+        },
+        {
+          "url": "https://animestore.docomo.ne.jp/animestore/CQ/notice-5406",
+          "fact": "播放方官方新上架公告把Second Stage列為獨立作品，連結直接指向workId24227；First、Third、Fourth與Extra另列。"
+        }
+      ],
+      "organizationSources": [
+        {
+          "url": "https://www.gfa.co.jp/gfa_wp/wp-content/uploads/2022/10/140120201117425505.pdf",
+          "fact": "GFA 2020-11-17自身合作公告第3頁將パステル明稱動畫製作公司，說明其CG部門於2008年併入SMDE。這裡只作組織身分補證，不以CG部門歷史代替本作正篇信用。"
+        }
+      ],
+      "scopeProof": "使用1999 Second Stage本作完整STAFF的制作信用，並依同表分開的製作/製作協力排除出資方；沒有沿用第一期Gallop/Comet、第三期DEEN或第四期A.C.G.T。不得把原角色隱去或宣稱來源原文是アニメーション制作。",
+      "note": "本作正篇承製公司可採パステル。原本地首播日與其他日文資料的月份內日期差異未改寫；目前精確年、季別、完整片名、13話及主創/故事核對成立。"
+    }
+  },
+  "/animeRef.php?sn=113865": {
+    "contemporaneousEvidence": {
+      "id": "/animeRef.php?sn=113865",
+      "title": "怪醫黑傑克 FLASH ANIME",
+      "status": "verified",
+      "canonicalTitle": "ブラック・ジャック（2001年インターネットオリジナルFLASHアニメ）",
+      "reportPublishedAt": "2001-07-31",
+      "reportAuthor": "日下雅裕",
+      "companies": [
+        {
+          "name": "コンテンツジャパン",
+          "originalRole": "制作（同期原始報導；監修另列手塚プロダクション）",
+          "sourceURL": "https://bb.watch.impress.co.jp/news/2001/07/31/tezuka.htm",
+          "fact": "記者當年的原始報導明確說本作是12話、各約11分鐘的原創FLASH動畫，製作由Contents Japan負責，手塚Production是監修；不是電視版數位轉檔，也沒有把監修公司列成承製。",
+          "checkedAt": "2026-10-26T08:04:16.832640+00:00"
+        }
+      ],
+      "identitySources": [
+        {
+          "url": "https://tezukaosamu.net/jp/anime/121.html",
+          "fact": "權利方本作頁確認2001網路Flash版本、手塚原作及Contents Japan參與；該頁未分公司職務，僅用於版本互證。"
+        },
+        {
+          "url": "https://bb.watch.impress.co.jp/news/2001/07/31/tezuka.htm",
+          "fact": "2001-07-31原始署名報導，翌日8月1日開始的全12話原創FLASH動畫，和本地2001/08/01版本相符。"
+        }
+      ],
+      "scopeNote": "限2001年網路原創FLASH版。公司角色採同期原始新聞報導並與權利方版本頁互證，明示非公司自身職務表；不重試已不可讀的coj舊新聞稿，不套1993OVA或後來TV版。"
+    }
+  }
+}

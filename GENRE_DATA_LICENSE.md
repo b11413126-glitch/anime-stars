@@ -1,5 +1,7 @@
 # 外部題材資料來源與授權
 
+目前介面優先使用 `site/official-metadata.json` 的動畫瘋官方公開分類與製作廠商；1部到期影片的Bangumi題材補證、部分製作職務與公司別名仍依下述來源條款標示。第一方及同期原始報導只保存最少公共事實與來源，不鏡像全文，不將整份官方快照宣稱為Bangumi授權。原 `genres.json`／`studios.json` 為後備。每筆來源、原始職務、查詢時間及必要修改可在分類檔核對。
+
 `site/genres.json` 使用 [Bangumi](https://bgm.tv/) 維基人管理的公共 `meta_tags`，經題材白名單篩選、去除重複及繁體中文轉換，並依動畫瘋作品快照配對。每個已核對條目保留來源 subject ID、原始題材文字、名稱、日期、比對依據及實際查詢時間。網站各列提供原作品分類來源連結。
 
 這份題材衍生資料依 **[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)** 提供；請保留 Bangumi 來源、授權連結、修改說明及相同授權。上游說明：[Bangumi 版權聲明](https://bgm.tv/about/copyright)、[開發者條款](https://bgm.tv/about/developer)。本網站不提供完整上游資料庫鏡像或代理 API，也不保證上游永久開放存取。

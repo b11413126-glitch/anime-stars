@@ -2,11 +2,13 @@ import {selectItems,officialTags,minimumVotes,readFilters,filterURL,workYears,AG
 import {verifiedItems,verifiedTags} from './snapshot.mjs';
 import {verifiedGenres,applyGenres} from './genres.mjs';
 import {verifiedStudios,applyStudios,studioOptions} from './studios.mjs';
+import {verifiedOfficialMetadata,applyOfficialMetadata} from './official-metadata.mjs';
 
 const $=id=>document.getElementById(id);
 const size=50,format=new Intl.NumberFormat('zh-TW');
 let ranked=[],page=1,tagsReady=false,availableTags=[];
 let genreInfo=null;
+let officialMetadataInfo=null;
 let studiosReady=false,studioDirectory=[];
 let filters=readFilters(location.search);
 
@@ -58,7 +60,7 @@ function renderStudios(){
     $(input.checked?'studio-selected':'studio-options').append(label);
   }
   if(!$('studio-options').childElementCount)$('studio-options').append(el('p','studio-empty',studiosReady?'沒有其他符合的公司':'公司資料尚未提供'));
-  $('studio-status').textContent='可複選，符合任一已選公司即可；題材與其他篩選條件仍須同時符合。僅列實際動畫製作職務，共同製作公司全部保留。';
+  $('studio-status').textContent='可複選，符合任一已選公司即可；題材與其他篩選條件仍須同時符合。'+(officialMetadataInfo?'動畫作品依官方「製作廠商」與逐部補證整理，共同製作全部保留；真人與現場作品不納入動畫公司篩選。':'僅列實際動畫製作職務，共同製作公司全部保留。');
   $('studio-search').disabled=!studiosReady;
 }
 function filterSummary(){
@@ -132,9 +134,15 @@ function render(){
     const info=el('div');
     const ageLabel=AGE_CATEGORIES.find(([id])=>id===ageCategory(x.ageRating))?.[1];
     info.append(link(x),el('div','year',(x.year||'年份未提供')+(ageLabel?' · '+ageLabel:'')));
+    if(x.officialMetadata?.officialUnavailable)info.append(el('div','work-tags','原快照標示 '+x.officialMetadata.officialUnavailable.scheduledDownTime+' 下架；保留歷史排名，分類採公共補證。'));
     if(tagsReady){
-      const tags=el('div','work-tags',x.tags.length?x.tags.join(' · '):'題材尚未分類');
-      if(genreInfo&&x.genre?.match){
+      const tags=el('div','work-tags',x.tags.length?x.tags.join(' · '):(x.officialMetadata?'官方未標示分類':'題材尚未分類'));
+      if(x.officialMetadata){
+        const fallback=x.officialMetadata.genreSupplement;
+        const source=el('a','genre-source',fallback?'分類補證 ↗':'官方分類 ↗');
+        source.href=fallback?'https://bgm.tv/subject/'+fallback.subjectId:x.officialMetadata.sourceURL;source.target='_blank';source.rel='noopener noreferrer';
+        tags.append(document.createTextNode(' · '),source);
+      }else if(genreInfo&&x.genre?.match){
         const source=el('a','genre-source','分類來源 ↗');
         source.href='https://bgm.tv/subject/'+x.genre.match.subjectId;source.target='_blank';source.rel='noopener noreferrer';
         tags.append(document.createTextNode(' · '),source);
@@ -143,10 +151,14 @@ function render(){
     }
     if(studiosReady){
       const names=new Map(studioDirectory.map(s=>[s.id,s.name]));
-      const companies=el('div','work-studios',x.studioIds.length?'動畫製作：'+x.studioIds.map(id=>names.get(id)).join('、'):'製作公司尚未確認');
-      if(x.studioIds.length){
-        const source=el('a','genre-source','製作職務 ↗');
-        source.href='https://bgm.tv/subject/'+x.studio.subjectId;source.target='_blank';source.rel='noopener noreferrer';
+      const supplement=x.officialMetadata?.studioSupplement;
+      const nonAnimation=x.officialMetadata?.animationStudioApplicability==='not-applicable';
+      const companies=el('div','work-studios',nonAnimation?'非動畫作品 · '+(x.officialMetadata.manufacturer?'官方製作廠商：'+x.officialMetadata.manufacturer:'動畫製作公司不適用'):x.studioIds.length?(supplement?'動畫製作（補查）：':x.officialMetadata?'製作廠商：':'動畫製作：')+x.studioIds.map(id=>names.get(id)).join('、'):(x.officialMetadata?'官方未標示製作廠商':'製作公司尚未確認'));
+      if(x.studioIds.length||nonAnimation){
+        const source=el('a','genre-source',supplement?'補查來源 ↗':x.officialMetadata?'官方製作資料 ↗':'製作職務 ↗');
+        source.href=supplement?(['first-party-animation-production','contemporaneous-production-report'].includes(supplement.source)||supplement.credits[0].sourceField==='person-work-list'?supplement.credits[0].sourceURL:'https://bgm.tv/subject/'+supplement.subjectId):x.officialMetadata?.sourceURL||'https://bgm.tv/subject/'+x.studio.subjectId;source.target='_blank';source.rel='noopener noreferrer';
+        if(supplement)source.title='職務查核時間：'+new Date(supplement.checkedAt).toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
+        if(supplement?.source==='contemporaneous-production-report')source.title+='；同期原始報導 '+supplement.reportPublishedAt+'，'+supplement.reportAuthor;
         companies.append(document.createTextNode(' · '),source);
       }
       info.append(companies);
@@ -185,6 +197,33 @@ try{
     ranked=verified;tagsReady=verifiedTags(data);
     const sha=async text=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))].map(x=>x.toString(16).padStart(2,'0')).join('');
     const hash=await sha(snapshotText);
+    try{
+      const response=await fetch('./official-metadata.json',{cache:'no-store'});
+      if(!response.ok)throw Error('官方分類檔案未提供');
+      const metadata=await response.json(),mappingResponse=await fetch('./genre-map.json',{cache:'no-store'});
+      if(!mappingResponse.ok)throw Error('補證題材對映讀取失敗');
+      const records=verifiedOfficialMetadata(data,metadata,hash,await mappingResponse.json());
+      ranked=applyOfficialMetadata(ranked,records);officialMetadataInfo=metadata;
+      $('studio-categories').querySelector('legend').textContent='動畫製作公司';
+      studioDirectory=metadata.studios;tagsReady=true;studiosReady=true;
+      const source=el('a','','巴哈姆特動畫瘋影片頁');source.href='https://ani.gamer.com.tw/';source.target='_blank';source.rel='noopener noreferrer';
+      const time=new Date(metadata.checkedThrough).toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
+      $('genre-attribution').replaceChildren(document.createTextNode(`作品分類：官方 ${format.format(metadata.officialGenreCount)} 部、公共補證 ${format.format(metadata.supplementedGenreCount)} 部，合計 ${format.format(metadata.classifiedCount)} / ${format.format(ranked.length)} 部；來源：`),source,
+        document.createTextNode('，每部作品均附來源連結。'),el('br'),document.createTextNode('分類查核完成時間：'+time+'；評分時間保持原始快照。'));
+      if(metadata.supplementedGenreCount){
+        const license=el('a','','Bangumi 公共標籤（CC BY-SA 3.0）');license.href='https://bgm.tv/about/copyright';license.target='_blank';license.rel='noopener noreferrer';
+        $('genre-attribution').append(el('br'),document.createTextNode('原快照已下架而無法讀取官方頁面的作品：'),license,document.createTextNode('；經固定版本ACG與完整片名對照、只採支援題材並轉繁體。原始查詢時間保留於分類檔。'));
+      }
+      const studioSource=el('a','','動畫瘋「製作廠商」欄位');studioSource.href='https://ani.gamer.com.tw/';studioSource.target='_blank';studioSource.rel='noopener noreferrer';
+      $('studio-attribution').replaceChildren(document.createTextNode(`動畫製作：官方 ${format.format(metadata.officialStudioCount)} 部、外部補證 ${format.format(metadata.supplementedStudioCount)} 部，共 ${format.format(studioDirectory.length)} 家；另 ${format.format(metadata.notApplicableCount)} 部非動畫不適用、${format.format(metadata.unconfirmedStudioCount)} 部仍待補證。來源：`),studioSource,
+        document.createTextNode('，不採用「代理廠商」欄位。官方空白且尚無補證者會明示，未選廠商仍保留完整榜單。'),el('br'),document.createTextNode('官方欄位查核完成時間：'+time+'；外部補證保留原始查詢時間，評分時間保持原始快照。'));
+      if(metadata.supplementedStudioCount||metadata.companyAliasesSource){
+        const license=el('a','','Bangumi 公共動畫製作職務（CC BY-SA 3.0）');license.href='https://bgm.tv/about/copyright';license.target='_blank';license.rel='noopener noreferrer';
+        $('studio-attribution').append(el('br'),document.createTextNode('公司別名與部分職務補證：'),license,document.createTextNode('；其他補證依本作官方STAFF、第一方製作證據或明示的同期原始報導，逐部提供來源連結，不標成動畫瘋原欄位。'));
+      }
+      $('studio-attribution').append(el('br'),document.createTextNode('分類檔整理時間：'+new Date(metadata.updatedAt).toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false})));
+    }catch(error){$('classification-notice').textContent='官方分類暫時無法通過核對，先顯示既有分類；排名資料仍可使用。';console.warn('官方分類未啟用，讀取既有分類：',error);}
+    if(!officialMetadataInfo){
     let genreRecords=null,genreHash=null;
     {
       try{
@@ -227,11 +266,13 @@ try{
       $('studio-notice').textContent='製作公司資料暫時無法通過核對，完整排行榜與其他已驗證篩選仍可使用。';
       console.warn('公司資料未啟用：',error);
     }
+    }
     availableTags=tagsReady?officialTags(ranked):[];
     filterInputs();
     const date=new Date(data.updatedAt);
     $('updated').textContent='最後成功更新：'+date.toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
-    if(Date.now()-date.getTime()>35*24*3600*1000)$('notice').textContent='資料已超過 35 天未更新，以下為上次成功取得的排名。';
+    $('notice').textContent=[Date.now()-date.getTime()>35*24*3600*1000?'資料已超過 35 天未更新，以下為上次成功取得的排名。':'',
+      officialMetadataInfo?.unavailableCount?`原快照有 ${format.format(officialMetadataInfo.unavailableCount)} 部作品已到排定下架日，現仍保留歷史排名並逐部標示；分類採獨立公共補證，沒有重試已下架影片。`:''].filter(Boolean).join(' ');
   }else $('notice').textContent='資料來源尚未通過完整性及台灣觀看資格驗證，目前不提供排名。';
   $('excluded').textContent=verified?`無評分而未列入：${format.format(data.excludedCount||0)} 部。部分作品可能需登入、年齡驗證或付費資格；可觀看狀態以官方當下頁面為準。`:'尚未取得完整資料，無評分作品數尚未確認。';
 }catch(error){

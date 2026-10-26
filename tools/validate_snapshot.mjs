@@ -1,15 +1,24 @@
 import {readFile} from 'node:fs/promises';
 import {verifiedItems,verifiedTags} from '../site/snapshot.mjs';
 import {ageCategory} from '../site/ranking.mjs';
+import {createHash} from 'node:crypto';
+import {verifiedOfficialMetadata} from '../site/official-metadata.mjs';
 
-const data = JSON.parse(await readFile(new URL('../site/data.json', import.meta.url), 'utf8'));
+const bytes=await readFile(new URL('../site/data.json', import.meta.url));
+const data = JSON.parse(bytes);
 const items = verifiedItems(data);
 if(process.argv.includes('--require-classification')&&(!items||items.some(x=>
   !/^\d{4}(?:\/(?:0[1-9]|1[0-2]))?$/.test(x.year)||!ageCategory(x.ageRating)))){
   throw Error('年份或官方年齡說明缺漏，不可發布年份／分級分類');
 }
-if(process.argv.includes('--require-tags')&&!verifiedTags(data)){
-  throw Error('尚未逐部驗證官方題材，不可發布分類功能');
+let officialTagsVerified=verifiedTags(data);
+if(process.argv.includes('--require-tags')&&!officialTagsVerified){
+  const metadata=JSON.parse(await readFile(new URL('../site/official-metadata.json',import.meta.url)));
+  verifiedOfficialMetadata(data,metadata,createHash('sha256').update(bytes).digest('hex'),
+    JSON.parse(await readFile(new URL('../site/genre-map.json',import.meta.url))));
+  if(metadata.supplementedGenreCount||metadata.unavailableCount||metadata.officialGenreCount!==data.items.length)
+    throw Error('分類含明示的公共補證，不能宣稱整份官方題材；請另執行 validate_official_metadata.mjs 逐筆驗證混合來源');
+  officialTagsVerified=true;
 }
 if (!items || data.catalogCount !== items.length + data.excludedCount ||
     !Number.isInteger(data.pageCount) || data.pageCount < 1 ||
@@ -21,4 +30,4 @@ if (items.some(x => !x.year || !x.checkedAt || !Number.isFinite(Date.parse(x.che
 }
 console.log(JSON.stringify({success:true,rankedCount:items.length,catalogCount:data.catalogCount,
   pageCount:data.pageCount,excludedCount:data.excludedCount,updatedAt:data.updatedAt,
-  officialTagsVerified:verifiedTags(data)}));
+  officialTagsVerified}));

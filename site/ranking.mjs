@@ -1,3 +1,4 @@
+const studioID=value=>typeof value==='string'&&/^(?:[1-9]\d*|official-[a-f0-9]{16})$/.test(value);
 export function rankItems(items){
   const seen=new Set();
   const valid=items.filter(x=>x&&typeof x.id==='string'&&typeof x.title==='string'&&x.title.trim()&&typeof x.score==='number'&&Number.isFinite(x.score)&&x.score>=1&&x.score<=5&&Number.isInteger(x.votes)&&x.votes>0&&!seen.has(x.id)&&seen.add(x.id));
@@ -35,7 +36,7 @@ export function readFilters(search){
     tags:[...new Set(params.getAll('tag').filter(Boolean))],
     year:/^\d{4}$/.test(params.get('year')||'')?params.get('year'):'',
     age:AGE_CATEGORIES.some(([id])=>id===params.get('age'))?params.get('age'):'',
-    studios:[...new Set(params.getAll('studio').filter(id=>/^[1-9]\d*$/.test(id)))]};
+    studios:[...new Set(params.getAll('studio').filter(studioID))]};
 }
 export function filterURL(rawURL,{query,minimum,tags,year='',age='',studios=[]}){
   const url=new URL(rawURL);
@@ -46,7 +47,7 @@ export function filterURL(rawURL,{query,minimum,tags,year='',age='',studios=[]})
   if(AGE_CATEGORIES.some(([id])=>id===age))url.searchParams.set('age',age);
   for(const tag of [...new Set(tags)].sort((a,b)=>a.localeCompare(b,'zh-Hant')))
     url.searchParams.append('tag',tag);
-  for(const id of [...new Set(studios)].filter(id=>/^[1-9]\d*$/.test(id)).sort((a,b)=>Number(a)-Number(b)))
+  for(const id of [...new Set(studios)].filter(studioID).sort((a,b)=>a.localeCompare(b,'en',{numeric:true})))
     url.searchParams.append('studio',id);
   return url.href;
 }

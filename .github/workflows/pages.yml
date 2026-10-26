@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
-      - run: node --test tests/ranking.test.mjs
+      - run: node --test tests/ranking.test.mjs tests/official-metadata.test.mjs
       - run: python3 -m unittest discover -s tests -p 'test_*.py' -v
       - name: 確認完整台灣觀看資格、年份分級與快照格式
         run: node tools/validate_snapshot.mjs --require-classification
@@ -30,6 +30,8 @@ jobs:
         run: node tools/validate_genres.mjs
       - name: 核對動畫製作公司職務、作品對應與覆蓋率
         run: node tools/validate_studios.mjs
+      - name: 核對逐部官方分類、製作廠商與原評分快照
+        run: node tools/validate_official_metadata.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

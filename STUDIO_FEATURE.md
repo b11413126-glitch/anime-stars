@@ -1,6 +1,6 @@
 # 動畫製作公司分類
 
-2026-10-26目前優先採完整獨立 `site/official-metadata.json` 的官方「製作廠商」，空白者才補逐部公共或第一方證據。1,795部已確認公司（官方1,761、補證34）、93部非動畫不適用、5部仍未確認，共393家公司。代理不當製作公司；非動畫不能套動畫職務；未知仍保留全榜。補證來源與季別範圍見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)，須執行 `node tools/validate_official_metadata.mjs`。原 `studios.json` 保留為後備，以下Bangumi程序僅適用其來源，不能否定官方已明示的廠商。
+2026-11-22優先採完整獨立 `site/official-metadata.json` 的官方「製作廠商」，本次隨1,906部上榜作品從官方API maker欄位逐部保存，空白者才補逐部公共或第一方證據。1,808部已確認公司（官方1,776、補證32）、93部非動畫不適用、5部仍未確認，共394家公司。代理不當製作公司；非動畫不能套動畫職務；未知仍保留全榜。補證來源與季別範圍見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)，須執行 `node tools/validate_official_metadata.mjs`。原 `studios.json` 保留為後備，以下Bangumi程序僅適用其來源，不能否定官方已明示的廠商。新評分快照須依 [CATALOG_RECONCILIATION.md](CATALOG_RECONCILIATION.md) 同步重建分類綁定。
 
 公司與題材置於同一個原生 details「分類篩選」區，預設收合。收合時顯示已選摘要；搜尋作品、最低評分人數、年份、分級與清除全部維持常駐。展開後選取不自動收合，使用者可手動收合；重新整理與分享網址可還原條件，面板仍預設收合。
 

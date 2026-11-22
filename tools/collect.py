@@ -140,16 +140,21 @@ def parse_metadata(source, anime_sn, access_context='anonymous'):
     if not isinstance(video.get('videoSn'), int) or video['videoSn'] <= 0:
         raise ValueError('No official playable episode ID')
     now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
+    expiry_day_permission_verified = False
     for field in ('upTime', 'downTime'):
         value = video.get(field)
         if value == '' and field == 'downTime':
             continue
         if not isinstance(value, str):
             raise ValueError('Missing official availability timestamp')
-        # The official API also emits a date-only expiry (observed 2026/10/31).
-        # Use the start of that day, so no unstated end-of-day grace is assumed.
-        pattern = '%Y/%m/%d' if field == 'downTime' and re.fullmatch(r'\d{4}/\d{2}/\d{2}', value) else '%Y/%m/%d %H:%M'
+        # A date is not an expiry instant. On that day a live, positive member
+        # permission is evidence of current access, not a promise through 23:59.
+        date_only = field == 'downTime' and bool(re.fullmatch(r'\d{4}/\d{2}/\d{2}', value))
+        pattern = '%Y/%m/%d' if date_only else '%Y/%m/%d %H:%M'
         timestamp = dt.datetime.strptime(value, pattern).replace(tzinfo=now.tzinfo)
+        if date_only and timestamp.date() == now.date() and access_context == 'member-browser':
+            expiry_day_permission_verified = True
+            continue
         if (field == 'upTime' and timestamp > now) or (field == 'downTime' and timestamp <= now):
             raise RuntimeError('Official episode is not currently available: ' + field)
     score, votes = anime.get('score'), anime.get('reviewCount')
@@ -164,7 +169,9 @@ def parse_metadata(source, anime_sn, access_context='anonymous'):
     return {'score': float(score), 'votes': votes,
             'availability': {'basis': 'official-watching-permission', 'accessContext': access_context, 'pass': True,
                              'videoSn': video['videoSn'], 'upTime': video['upTime'],
-                             'downTime': video['downTime']}}
+                             'downTime': video['downTime'],
+                             **({'downTimePrecision': 'date', 'expiryDayPermissionVerified': True}
+                                if expiry_day_permission_verified else {})}}
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):

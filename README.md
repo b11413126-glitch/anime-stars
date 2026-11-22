@@ -2,11 +2,13 @@
 
 公開網站：[星序](https://b11413126-glitch.github.io/anime-stars/)
 
-2026-10-26完成官方分類擷取修正。獨立檔案 `site/official-metadata.json` 包含原榜單全部1,893部：題材1,892部官方、1部到期影片公共補證；動畫製作公司1,761部官方、34部外部補證，另93部非動畫不適用、5部尚未確認，共393家公司。每部提供來源，保留原始評分快照與時間。程序見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)。
+2026-11-22完成11月完整資料核對：69頁、1,922部作品，1,906部有評分、16部確認無評分。評分快照完成於台灣時間22:13:33。完整目錄採雙官方排序聯集與預期總數對帳，逐部前後各做兩輪完整掃描；程序與來源限制見 [CATALOG_RECONCILIATION.md](CATALOG_RECONCILIATION.md)。
+
+獨立 `site/official-metadata.json` 包含全部1,906部官方題材；動畫製作公司1,776部官方、32部既有可靠補證，另93部非動畫不適用、5部尚未確認，共394家公司。逐部保存官方API的公開maker、seasonStart及tags，來源與查詢時間分別標示；程序見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)。
 
 動畫瘋官方顯示星等排行榜，公開瀏覽免登入。依一位小數星等降冪、評分人數降冪、名稱固定排序，名次連續；搜尋與最低評分人數篩選保留全站名次，每頁 50 部。
 
-網站提供題材複選、作品年份、年齡分級及動畫製作公司，與搜尋、最低評分人數同時篩選，保留全站名次。題材須全部符合，公司任一符合；分類面板預設收合。官方分類查核完成於2026-10-26台灣時間15:45:14；評分仍為2026-10-18台灣時間17:06:32。原已排定下架的影片明示到期，不冒充目前可觀看。規格見 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)。
+網站提供題材複選、作品年份、年齡分級及動畫製作公司，與搜尋、最低評分人數同時篩選，保留全站名次。題材須全部符合，公司任一符合；分類面板預設收合，網址可分享還原。官方分類逐部查詢截至2026-11-22台灣時間22:06:08；分類整理時間與評分快照完成時間分開。規格見 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)。
 
 ## 資料與完整性
 
@@ -14,29 +16,29 @@
 
 首次完整驗證：69 頁、1,909 個唯一作品，1,893 部有評分、16 部確認無評分。擷取期間目錄順序變動後，重新讀取全部 69 頁，確認作品集合完全相同；不存在漏頁、重複或未解決的失敗。最新實際時間與數量以 `site/data.json` 為準。
 
-任何來源拒絕、登入失效、無效值、缺漏或作品集合變動均停止，不發布半份榜單。無評分與解析失敗分開處理；全部成功才原子取代正式快照。資料逾 35 天會在網站提醒，失敗時保留前次成功時間與資料。
+任何來源拒絕、登入失效、無效值或無法對帳的缺漏均停止，不發布半份榜單。跨頁重疊須由完整雙排序及唯一總數對帳證明補齊；少量新增須補驗，下架須固定影片的官方到期證據，不因排序變動丟棄有效紀錄。無評分與解析失敗分開處理；全部成功才原子取代正式快照。資料逾35天會在網站提醒，失敗保留前次成功時間與資料。
 
 ## 更新與部署
 
 GitHub Pages／公開儲存庫提供免費靜態網站；GitHub Actions 只測試與部署已驗證快照，不擷取需會員登入的來源。Pages Source 使用 GitHub Actions，變數 `ANIME_SOURCE_VERIFIED=true` 仍須搭配每次快照驗證與測試通過。沒有儲存巴哈帳密或 Cookie。
 
-排名每月最多更新一次，在使用者本機Codex與正常登入的內建瀏覽器執行。排程設為每月23日17:17（Asia/Taipei），目前因目錄完整性阻礙維持暫停，不因分類發布恢復。當月已成功便不重跑；關機、離線、Codex未執行或登入失效時不能更新。完整來源核對至少約85分鐘，程序見 [BROWSER_UPDATE.md](BROWSER_UPDATE.md)。
+排名每月最多更新一次，在使用者本機Codex與正常登入的內建瀏覽器執行。排程設定為每月23日17:17（Asia/Taipei），既有暫停狀態不因本次人工月更自動恢復。當月已成功便不重跑；關機、離線、Codex未執行或登入失效時不能更新。完整來源核對可能超過85分鐘，程序見 [BROWSER_UPDATE.md](BROWSER_UPDATE.md)。
 
 ## 本機檢查
 
 需要 Python 3.10+、Node.js，無第三方程式套件。
 
 ```powershell
-node --test tests/ranking.test.mjs tests/official-metadata.test.mjs
+node --test tests/ranking.test.mjs tests/official-metadata.test.mjs tests/catalog-reconciliation.test.mjs
 python -m unittest discover -s tests -p 'test_*.py' -v
-node tools/validate_snapshot.mjs --require-classification
+node tools/validate_snapshot.mjs --require-classification --require-tags
 node tools/validate_genres.mjs
 node tools/validate_studios.mjs
 node tools/validate_official_metadata.mjs
 python -m http.server 8000 --bind 127.0.0.1 --directory site
 ```
 
-71項測試（Node 44、Python 27）涵蓋排序、來源完整性、拒絕停止、兩輪目錄預檢、題材交集與公司聯集、網址還原、固定影片及ACG身分、代理排除、官方空白與欄位缺漏、真人不適用證據、到期影片不重試、精確公司職務、第一方及同期原始報導補證。測試不能替代真實來源核對。
+87項測試（Node 52、Python 35）涵蓋排序、來源拒絕停止、完整雙排序總數對帳、跨頁重疊與漏項拒絕、增量新增待驗、固定影片下架補證、交易回滾、題材交集與公司聯集、網址還原、作品與ACG身分、代理排除、官方空白與欄位缺漏、真人不適用證據及可靠公司職務補證。測試不能替代真實來源核對。
 
 `tools/collect.py` 與 `verify-source.yml` 是無登入來源診斷工具；遇到限制級登入要求會停止，不是會員定期更新的替代方式。會員更新使用 `tools/member_browser_driver.mjs` 與本機 `tools/browser_import.py`，只透過正常瀏覽器讀公開作品欄位，每次來源導覽至少間隔 2.6 秒。
 

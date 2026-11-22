@@ -14,6 +14,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 from collect import ROOT, BASE, API, AGENT, atomic_json, parse_metadata
+from reconciled_import import accept_reconciled
 
 
 def public_tags(record):
@@ -52,6 +53,12 @@ class ImportSession:
 
     def accept(self, payload):
         kind = payload['kind']
+        if payload.get('catalogProof', {}).get('version') == 2:
+            return accept_reconciled(self, payload, check_robots)
+        if kind == 'batch' and self.state_path.exists():
+            existing = json.loads(self.state_path.read_text(encoding='utf-8'))
+            if existing.get('protocolVersion') == 2:
+                return accept_reconciled(self, payload, check_robots)
         if kind == 'robots':
             check_robots(payload)
             return {'ok': True, 'robotsAllowed': True}

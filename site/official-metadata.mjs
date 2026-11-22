@@ -5,7 +5,7 @@ const norm=x=>x.normalize('NFKC').replace(/\s+/gu,' ').trim();
 const titleMatches=(source,title)=>{const a=norm(source),b=norm(title);return a===b||
   (a.startsWith(b)&&/^(?:\s*\[[^\]]+\])+\s*$/u.test(a.slice(b.length)));};
 const unique=x=>Array.isArray(x)&&new Set(x).size===x.length;
-const mediaTypes=new Set(['live-action-drama','live-action-tokusatsu','live-action-variety','live-concert-recording','live-stage-reading','live-stage-recording']);
+const mediaTypes=new Set(['live-action-drama','live-action-tokusatsu','live-action-variety','live-concert-recording','live-stage-reading','live-stage-recording','live-action-unspecified']);
 const https=x=>{try{const u=new URL(x);return u.protocol==='https:'&&!u.username&&!u.password&&u.hostname!=='localhost'&&!/^127\./.test(u.hostname);}catch{return false;}};
 function supplementNames(row){
   const value=row.studioSupplement;
@@ -41,7 +41,7 @@ function supplementNames(row){
   return [...new Set(value.credits.map(x=>x.name))];
 }
 export function verifiedOfficialMetadata(snapshot,metadata,rankingHash,mapping={}){
-  if(metadata?.schemaVersion!==1||metadata.source!=='gamer-rendered-work-metadata'||metadata.complete!==true||
+  if(metadata?.schemaVersion!==1||!['gamer-rendered-work-metadata','gamer-official-api-work-metadata'].includes(metadata.source)||metadata.complete!==true||
     metadata.sourceURL!=='https://ani.gamer.com.tw/'||metadata.rankingSHA256!==rankingHash||
     !/^[a-f0-9]{64}$/.test(rankingHash)||metadata.rankingUpdatedAt!==snapshot.updatedAt||
     metadata.rankingCount!==snapshot.items.length||!date(metadata.checkedFrom)||!date(metadata.checkedThrough)||
@@ -66,6 +66,9 @@ export function verifiedOfficialMetadata(snapshot,metadata,rankingHash,mapping={
       Date.parse(row.checkedAt)<Date.parse(metadata.checkedFrom)||Date.parse(row.checkedAt)>Date.parse(metadata.checkedThrough))
       throw Error('官方分類作品身分、公開欄位或查詢時間無效');
     const cover=new URL(item.image).pathname.match(/^\/B\/ACG\/c\/\d+\/0*(\d+)\.[^.]+$/)?.[1];
+    if(metadata.source==='gamer-official-api-work-metadata'&&(row.sourceKind!=='gamer-official-api'||
+      row.evidenceSourceURL!=='https://api.gamer.com.tw/anime/v1/video.php?animeSn='+row.id.split('sn=')[1]||row.officialUnavailable))
+      throw Error('官方API分類須逐部固定作品來源，不得冒充已讀取到期欄位');
     if(row.officialUnavailable){
       const unavailable=row.officialUnavailable,g=row.genreSupplement;
       const match=item.availability.downTime?.match(/^(\d{4})\/(\d{2})\/(\d{2})$/);
@@ -91,6 +94,7 @@ export function verifiedOfficialMetadata(snapshot,metadata,rankingHash,mapping={
         throw Error('官方分類公開欄位或ACG身分不符');
     }
     const nonAnimation=row.animationStudioApplicability==='not-applicable';
+    if(nonAnimation&&row.mediaType==='live-action-unspecified'&&!row.tags.includes('真人演出'))throw Error('真人不適用須有官方真人演出分類');
     if(nonAnimation&&(!mediaTypes.has(row.mediaType)||row.studioIds.length||row.studioSupplement||
       !https(row.mediaEvidence?.sourceURL)||!date(row.mediaEvidence.checkedAt)||!text(row.mediaEvidence.canonicalTitle)||!text(row.mediaEvidence.basis)))
       throw Error('非動畫作品須有逐部媒體類型證據，不能把查不到公司當成不適用');

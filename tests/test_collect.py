@@ -10,7 +10,7 @@ c = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(c)
 
 class CollectorTests(unittest.TestCase):
-    def test_date_only_expiry_is_validated_without_assuming_extra_hours(self):
+    def test_date_only_expiry_uses_observed_permission_without_inventing_an_hour(self):
         now = c.dt.datetime.now(c.dt.timezone(c.dt.timedelta(hours=8)))
         body = {'data': {'anime': {'animeSn': 42, 'score': 4.9, 'reviewCount': 123},
                          'video': {'animeSn': 42, 'videoSn': 99, 'upTime': '2020/01/01 00:00',
@@ -20,6 +20,20 @@ class CollectorTests(unittest.TestCase):
         body['data']['video']['downTime'] = now.strftime('%Y/%m/%d')
         with self.assertRaises(RuntimeError):
             c.parse_metadata(json.dumps(body), '42')
+        result = c.parse_metadata(json.dumps(body), '42', 'member-browser')
+        self.assertTrue(result['availability']['expiryDayPermissionVerified'])
+        self.assertEqual(result['availability']['downTimePrecision'], 'date')
+        self.assertEqual(result['availability']['downTime'], now.strftime('%Y/%m/%d'))
+        body['data']['video']['watchingPermission']['pass'] = False
+        with self.assertRaises(RuntimeError):
+            c.parse_metadata(json.dumps(body), '42', 'member-browser')
+        body['data']['video']['watchingPermission']['pass'] = True
+        body['data']['video']['downTime'] = (now - c.dt.timedelta(days=1)).strftime('%Y/%m/%d')
+        with self.assertRaises(RuntimeError):
+            c.parse_metadata(json.dumps(body), '42', 'member-browser')
+        body['data']['video']['downTime'] = (now - c.dt.timedelta(minutes=1)).strftime('%Y/%m/%d %H:%M')
+        with self.assertRaises(RuntimeError):
+            c.parse_metadata(json.dumps(body), '42', 'member-browser')
         body['data']['video']['downTime'] = '2026/13/31'
         with self.assertRaises(ValueError):
             c.parse_metadata(json.dumps(body), '42')

@@ -21,6 +21,13 @@ function fixture(){
     records:[record],studios:[{id:company,name:'單元測試公司',aliases:['單元測試公司'],count:1}]};
   return {item,raw,snapshot,metadata};
 }
+test('官方API分類保留精確作品來源，不能冒充渲染頁或其他作品',()=>{
+  const {snapshot,metadata}=fixture();metadata.source='gamer-official-api-work-metadata';
+  Object.assign(metadata.records[0],{sourceKind:'gamer-official-api',evidenceSourceURL:'https://api.gamer.com.tw/anime/v1/video.php?animeSn=42'});
+  assert.doesNotThrow(()=>verifiedOfficialMetadata(snapshot,metadata,hash));
+  for(const change of [{sourceKind:'rendered'},{evidenceSourceURL:'https://api.gamer.com.tw/anime/v1/video.php?animeSn=43'}])
+    assert.throws(()=>verifiedOfficialMetadata(snapshot,{...metadata,records:[{...metadata.records[0],...change}]},hash));
+});
 test('官方影片公開欄位採用製作廠商，排除代理與私人欄位',()=>{
   const {item,raw}=fixture(),row=validatePublicFields(item,raw);
   assert.equal(row.manufacturer,'單元測試公司');assert.deepEqual(row.tags,['奇幻','動作']);

@@ -21,6 +21,9 @@ for(const company of oldStudio.studios)for(const alias of company.aliases){
 const cache=new URL('../../../work/classification-completion/cache/',import.meta.url);
 const media=JSON.parse(await readFile(new URL('../../../work/classification-completion/media-type-evidence.json',import.meta.url)));
 const notAnimation=new Map(media.records.filter(x=>x.animationStudioApplicability==='not-applicable').map(x=>[x.id,x]));
+for(const row of progress.records)if(!notAnimation.has(row.id)&&row.tags?.includes('真人演出'))
+  notAnimation.set(row.id,{id:row.id,title:row.title,mediaType:'live-action-unspecified',
+    sourceURL:row.sourceURL,checkedAt:row.checkedAt,canonicalTitle:row.title,basis:'動畫瘋官方作品分類明示「真人演出」；不推定真人作品的細分類型。'});
 const supplemental=new Map();
 const fallbackGenres=new Map();
 for(const row of progress.records){

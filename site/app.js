@@ -206,7 +206,7 @@ try{
       ranked=applyOfficialMetadata(ranked,records);officialMetadataInfo=metadata;
       $('studio-categories').querySelector('legend').textContent='動畫製作公司';
       studioDirectory=metadata.studios;tagsReady=true;studiosReady=true;
-      const source=el('a','','巴哈姆特動畫瘋影片頁');source.href='https://ani.gamer.com.tw/';source.target='_blank';source.rel='noopener noreferrer';
+      const source=el('a','',metadata.source==='gamer-official-api-work-metadata'?'巴哈姆特動畫瘋官方作品資料':'巴哈姆特動畫瘋影片頁');source.href='https://ani.gamer.com.tw/';source.target='_blank';source.rel='noopener noreferrer';
       const time=new Date(metadata.checkedThrough).toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
       $('genre-attribution').replaceChildren(document.createTextNode(`作品分類：官方 ${format.format(metadata.officialGenreCount)} 部、公共補證 ${format.format(metadata.supplementedGenreCount)} 部，合計 ${format.format(metadata.classifiedCount)} / ${format.format(ranked.length)} 部；來源：`),source,
         document.createTextNode('，每部作品均附來源連結。'),el('br'),document.createTextNode('分類查核完成時間：'+time+'；評分時間保持原始快照。'));

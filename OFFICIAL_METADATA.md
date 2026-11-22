@@ -1,4 +1,16 @@
-# 官方影片頁分類
+# 官方作品分類與製作廠商
+
+## 2026-11-22完整月更
+
+目前1,906部上榜作品已隨完整評分更新，從官方API `video.php?animeSn=` 的公開anime欄位逐部保存title、acgSn、maker、seasonStart、tags，並核對必要影片觀看資格。來源型態為 `gamer-official-api-work-metadata`，每筆標記 `sourceKind:gamer-official-api` 與精確 `evidenceSourceURL`，使用者來源連結仍是實際videoSn對應的影片頁。不得聲稱本次另行重讀全部渲染頁。
+
+題材1,906部全為本次官方資料，沒有公共題材補證或已到期列；製作公司1,776部官方、32部既有可靠逐作補證，93部非動畫不適用，5部仍未確認，共394家公司。官方真人演出標籤可證明動畫公司不適用，不能將真人製作廠商充作動畫公司。外部補證與後備分類只在ID、片名、年月、ACG等身分不變時離線沿用，實際舊查詢日期不更新為今天。
+
+先完成 [CATALOG_RECONCILIATION.md](CATALOG_RECONCILIATION.md) 的完整逐部驗證及收尾對帳，再執行 `node tools/export_api_metadata.mjs`、`node tools/rebind_fallbacks.mjs <舊版基準專案>`、`node tools/build_official_metadata.mjs`。半份進度不能匯出正式分類；新評分與全部分類綁定均須驗證。原先10月資料保留為可回復基準，不能先覆蓋再拿錯誤基準重綁。
+
+官方逐部查詢截至台灣時間2026-11-22 22:06:08，評分快照完成於22:13:33；時間不同且各自保留。全部Node/Python測試及快照、題材、公司、官方分類驗證通過後才發布。純官方題材另通過 `validate_snapshot.mjs --require-tags`。既有每月上限與暫停排程不因這次人工成功而自行變更。
+
+## 2026-10-26渲染影片頁修正歷史
 
 2026-10-26 使用者提供影片頁截圖並要求繼續完成分類。實際以正常登入的內建瀏覽器查核，影片下方 `li.type` 公開列出「製作廠商」與「作品分類」。既有 API 收集器沒有保存製作廠商；外部對照又要求封面 ACG ID，部分封面使用 `/B/2KU/`，因此漏收，不能解釋成官方沒有資料。
 

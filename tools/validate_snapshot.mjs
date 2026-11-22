@@ -3,10 +3,17 @@ import {verifiedItems,verifiedTags} from '../site/snapshot.mjs';
 import {ageCategory} from '../site/ranking.mjs';
 import {createHash} from 'node:crypto';
 import {verifiedOfficialMetadata} from '../site/official-metadata.mjs';
+import {validateCatalogProof} from './catalog_reconciliation.mjs';
 
 const bytes=await readFile(new URL('../site/data.json', import.meta.url));
 const data = JSON.parse(bytes);
 const items = verifiedItems(data);
+if(data.catalogPrecheck?.version===2){
+  const ids=[...new Set(data.catalogPrecheck.passes.flatMap(p=>p.pages.flatMap(x=>x.ids)))];
+  validateCatalogProof(ids.map(id=>({id})),data.catalogPrecheck);
+  if(data.catalogCount!==ids.length||!items||items.some(x=>!ids.includes(x.id)))
+    throw Error('評分快照與完整目錄對帳證據不一致');
+}
 if(process.argv.includes('--require-classification')&&(!items||items.some(x=>
   !/^\d{4}(?:\/(?:0[1-9]|1[0-2]))?$/.test(x.year)||!ageCategory(x.ageRating)))){
   throw Error('年份或官方年齡說明缺漏，不可發布年份／分級分類');

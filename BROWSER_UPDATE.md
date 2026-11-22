@@ -1,6 +1,8 @@
 # 會員瀏覽器更新程序
 
-分類已改為優先讀取影片頁的公開官方欄位，程序見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)。`site/official-metadata.json` 與評分分開綁定；新評分快照必須重新核對完整分類，不能沿用錯誤雜湊。另跑 `node --test tests/official-metadata.test.mjs` 及 `node tools/validate_official_metadata.mjs`；發布後匿名讀回新檔並核對時間、全部作品、官方與補證數量及SHA-256。目前含1部原已排定到期影片的明示公共補證，不能宣稱純官方題材；其他來源拒絕仍停止。2026-10-26人工分類查核不解除不穩定目錄停止紀錄，不恢復暫停月更。
+2026-11-22更新：使用者已授權新版完整目錄對帳與結尾增量驗證，見 [CATALOG_RECONCILIATION.md](CATALOG_RECONCILIATION.md)。以下舊版「跨頁重複立即停止、兩輪ID須各自相同」程序，由v2的完整頁面證據、雙排序聯集及預期總數對帳取代；存取限制與無法對帳仍停止。逐部同時保存官方maker、seasonStart及tags，不重讀第二輪全部影片頁；每筆明示官方API證據來源。完整驗證先在獨立暫存專案執行，分類與評分快照一起驗證後才發布。
+
+11月候選快照已核對1,922部、上榜1,906部、16部無評分排除，完成於2026-11-22台灣時間22:13:33；收尾雙排序聯集仍為同一完整集合，沒有增減。全部上榜作品有本次官方題材。分類優先採公開官方API欄位，程序見 [OFFICIAL_METADATA.md](OFFICIAL_METADATA.md)。`site/official-metadata.json` 與評分分開綁定；新評分快照必須重新核對完整分類，不能沿用錯誤雜湊。執行全部三個Node測試檔、全部Python測試、快照與三份分類檢查；發布後匿名讀回四份JSON核對時間、數量及SHA-256，才記錄線上成功。10月渲染頁分類的已到期公共題材補證不在這份新榜單內。
 
 動畫製作公司分類與題材共用預設收合面板，程序見 [STUDIO_FEATURE.md](STUDIO_FEATURE.md)。發布前另執行 `node tools/validate_studios.mjs`；新評分快照與作品對照需同步重建綁定雜湊的 studios.json。發布後匿名讀回 data.json、genres.json、studios.json 核對各自時間、數量及SHA-256。後備公司來源為 Bangumi 公共職務，不構成解除動畫瘋來源停止或恢復暫停排程的授權。
 
@@ -8,7 +10,7 @@
 
 來源與更新程式：`tools/member_browser_driver.mjs`（只使用已文件化的 CUA Tab 操作）與 `tools/browser_import.py`（本機驗證接收器）。受限 API 端點來自官方播放器原始碼。網站與 API 的 robots.txt 每次重新檢查；所有來源頁面導覽間隔至少 2.6 秒。
 
-依使用者2026-10-23指示，排名自動更新每個曆月最多成功一次；排程每月23日17:17（Asia/Taipei）。先檢查 site/data.json 的 updatedAt（Asia/Taipei 年月），再匿名讀回網站核對。當月已成功且遠端相同便安靜結束，不重複擷取。若本機已有完整有效新快照但遠端尚未發布，先補發布。2026-10-23這次人類指定的立即手動更新為單次明確授權，不得當作未來自動重試授權；本次第二輪目錄第13頁重複而停止，沒有新評分快照。
+依使用者2026-10-23指示，排名自動更新每個曆月最多成功一次；排程設定每月23日17:17（Asia/Taipei），既有PAUSED狀態保持。先檢查site/data.json的updatedAt（Asia/Taipei年月），再匿名讀回網站核對。當月已成功且遠端相同便安靜結束，不重複擷取。若本機已有完整有效新快照但遠端尚未發布，先補發布。這次11月人工授權只適用本次手動執行，不得當作未來忽略新來源拒絕或自動恢復排程的授權。
 
 分類另提供已驗證的 Bangumi 公共題材；作品年份與官方年齡說明仍取自真實評分快照。外部題材來源與授權獨立保存，不表示動畫瘋來源已恢復。先閱讀 [CATEGORY_FEATURE.md](CATEGORY_FEATURE.md)。網站發布需通過 `--require-classification`，不得變更舊快照 updatedAt 冒充當日資料。新資料完整驗證才可取代；評分快照內嵌官方題材只有 `officialTagsVerified:true` 且逐部tags有效時才顯示；獨立分類檔另以完整來源及原快照雜湊驗證，不修改原標記。未保存題材的舊批次不可接續，欄位缺失不能當成官方無題材，不可從片名猜測分類。
 
